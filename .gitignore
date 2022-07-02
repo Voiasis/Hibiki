@@ -1,0 +1,10 @@
+.env
+.vscode
+.idea
+.apt_generated_tests
+.apt_generated
+target
+latestlog.txt
+BotConfig.txt
+BotLog.txt
+StarBoard.txt
