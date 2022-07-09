@@ -101,11 +101,19 @@ public class SearchTools {
         }
     }
     public static int countChar(String str, char c) {
-        
         int count = 0;
         for(int i=0; i < str.length(); i++) {
             if(str.charAt(i) == c) count++;
         }
         return count;
+    }
+    public static int countString(String in, String search) {
+        int i = 0;
+        Pattern p = Pattern.compile(search);
+        Matcher m = p.matcher( in );
+        while (m.find()) {
+            i++;
+        }
+        return i;
     }
 }

@@ -1,7 +1,6 @@
-package net.voiasis.commands.slash;
+package net.voiasis.commands.slash.fun;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -12,7 +11,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.voiasis.commands.slash.handler.CommandBuilder;
-import net.voiasis.tools.BotLog;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -43,21 +41,32 @@ public class slashSay extends CommandBuilder {
             String channel = channelOpt == null ? null : channelOpt.getAsString();
             String replyId = replyOpt == null ? null : replyOpt.getAsString();
             Boolean mention = mentionOpt == null ? null : mentionOpt.getAsBoolean();
-            //BotLog.log("Message: " + message + " Channel: " + channel + " replyId: " + replyId + " Mention: " + mention.toString(), "SayCommand", 3);
             if (channel == null) {
                 if (replyId == null) {
-                    event.getChannel().sendMessage(message).queue();
+                    event.getChannel().sendMessage(message).queue(m -> {
+                        embed.addField("Say", "Sent \"" + m.getContentRaw() + "\" inside " + m.getChannel().getAsMention(), false);
+                        event.replyEmbeds(embed.build()).mentionRepliedUser(false).setEphemeral(true).queue();
+                    });
                 } else {
                     TextChannel channel2 = event.getTextChannel();
                     Message message2 = channel2.retrieveMessageById(replyId).complete();
                     if (mention != null) {
                         if (mention) {
-                            message2.reply(message).mentionRepliedUser(true).queue();
+                            message2.reply(message).mentionRepliedUser(true).queue(m -> {
+                                embed.addField("Say", "Sent \"" + m.getContentRaw() + "\" inside " + m.getChannel().getAsMention(), false);
+                                event.replyEmbeds(embed.build()).mentionRepliedUser(false).setEphemeral(true).queue();
+                            });
                         } else {
-                            message2.reply(message).mentionRepliedUser(false).queue();
+                            message2.reply(message).mentionRepliedUser(false).queue(m -> {
+                                embed.addField("Say", "Sent \"" + m.getContentRaw() + "\" inside " + m.getChannel().getAsMention(), false);
+                                event.replyEmbeds(embed.build()).mentionRepliedUser(false).setEphemeral(true).queue();
+                            });
                         }
                     } else {
-                        message2.reply(message).mentionRepliedUser(false).queue();
+                        message2.reply(message).mentionRepliedUser(false).queue(m -> {
+                            embed.addField("Say", "Sent \"" + m.getContentRaw() + "\" inside " + m.getChannel().getAsMention(), false);
+                            event.replyEmbeds(embed.build()).mentionRepliedUser(false).setEphemeral(true).queue();
+                        });
                     }
                 }
             } else {
@@ -89,6 +98,8 @@ public class slashSay extends CommandBuilder {
         if (userId.equals("472899069136601099")) { //me
             return true;
         } else if (userId.equals("603166759515848705")) { //legacy
+            return true;
+        } else if (userId.equals("886444946285011025")) { //elaine
             return true;
         } else {
             return false;

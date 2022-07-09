@@ -31,7 +31,7 @@ public class prefixServerinfo {
         String categories = Long.toString(guild.getCategoryCache().size());
         String emojis = Long.toString(guild.getEmojiCache().size());
         String threads = Long.toString(guild.getThreadChannelCache().size());
-        String bans = Integer.toString(guild.retrieveBanList().cacheSize());
+        String bans = Integer.toString(guild.retrieveBanList().complete().size());
         String region = guild.getVoiceChannels().get(0).getRegion().getEmoji() + " " + guild.getVoiceChannels().get(0).getRegion().getName();
         String stickers = Integer.toString(guild.getStickers().size());
             
@@ -42,7 +42,7 @@ public class prefixServerinfo {
        
         embed.addField("Server ID", "<:idblock:994818038983561236> " + guild.getId(), false);
         embed.addField("Owner", owner, true).addField("Created", "<:time:994820769282531450> " + creation, true).addField("Voice Region", region, true);
-        embed.addField("Members", "<:members:994818077948641344> " + members + " Total | <:settings:994843742567673896> " + bots + " Bots <:online:995013089613328434> " + online + " | <:dnd:995012472954171402> " + dnd + " | <:idle:995012370411823104> " + idle + " | <:offline:995012909669285998> " + offline, false);
+        embed.addField("Members", "<:members:994818077948641344> " + members + " Total | <:settings:994843742567673896> " + bots + " Bots | <:online:995013089613328434> " + online + " | <:dnd:995012472954171402> " + dnd + " | <:idle:995012370411823104> " + idle + " | <:offline:995012909669285998> " + offline, false);
         embed.addField("Channels", "<:textchannels:994817869445603418> " + text + " Text | <:voicechannels:994817966027845732> " + voice + " Voice | <:threads:994817908318412850> " + threads + " Thread | <:categories:994817805167894619> " + categories + " Category", false);
         embed.addField("Customs", "<:roles:994820876631556187> " + roles + " Roles | <:reaction:994820690328944731> " + emojis + " Emojis | <:stickers:994820803285762148> " + stickers + " Stickers", false);
         embed.addField("Other", "<:bans:994817734959431851> " + bans + " Bans | <:boosts:994818140804489228> " + boosts + " Boosts", false);

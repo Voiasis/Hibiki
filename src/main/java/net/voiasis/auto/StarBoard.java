@@ -144,7 +144,7 @@ public class StarBoard {
     private static String replyStar(int starCount) {
         //BotLog.log("replyStar", "StarBoard", 2);
         String star;
-        if (starCount >= 14) {
+        if (starCount >= 15) {
             return star = "💫";
         } else if (starCount >= 10) {
             return star = "🌟";
@@ -154,7 +154,7 @@ public class StarBoard {
     }
     private static int requiredStarAmount() {
         //BotLog.log("requiredStarAmount", "StarBoard", 2);
-        return 7;
+        return 5;
     }
     private static String starboardMessageId(String reactedMessageId) throws IOException {
         //BotLog.log("starboardMessageId", "StarBoard", 2);

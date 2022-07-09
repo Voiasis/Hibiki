@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.security.auth.login.LoginException;
 
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -11,6 +12,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import net.voiasis.commands.slash.handler.CommandsList;
 import net.voiasis.events.onButtonInteractionEvent;
 import net.voiasis.events.onGuildMemberJoinEvent;
 import net.voiasis.events.onGuildMemberRemoveEvent;
@@ -29,7 +31,7 @@ public class main {
         rt.exec("taskkill /F /IM chromedriver.exe");
         BotLog.delete();
         BotLog.log("Logging in.", "BotStartup", 1);
-        JDABuilder.createDefault(BotConfig.get("TOKEN"))
+        JDA jda = JDABuilder.createDefault(BotConfig.get("TOKEN"))
         .setStatus(OnlineStatus.DO_NOT_DISTURB)
         .setActivity(Activity.watching("Hentai with Voiasis"))
         .addEventListeners(new onButtonInteractionEvent(),
@@ -64,5 +66,11 @@ public class main {
         CacheFlag.VOICE_STATE)
         .build();
         BotLog.log("Login Success.", "BotStartup", 1);
+        try {
+            Thread.sleep(1000);
+            CommandsList.registerCommands(jda, "902397621015040020");
+        } catch (InterruptedException e) {
+            BotLog.log(BotLog.getStackTraceString(e, jda), "main", 4);
+        }
     }
 }

@@ -37,7 +37,7 @@ public class BotCommands {
         String prefix = BotConfig.get("PREFIX"); //get bot prefix from config
         String command = args[0].toLowerCase().replace("+", "");
         //bot commands
-        if (args[0].startsWith(prefix)) {
+        if (args[0].startsWith(prefix) && !author.isBot()) {
             switch (command) {
                 case "help" :
                 prefixHelp.help(message);

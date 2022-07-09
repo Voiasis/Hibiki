@@ -1,7 +1,10 @@
 package net.voiasis.tools;
 
+import java.awt.Color;
+
 import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.send.WebhookMessageBuilder;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Webhook;
 
@@ -15,7 +18,11 @@ public class WebhookController {
             builder.setContent(content);
             client.send(builder.build());
         } catch (IllegalStateException e) {
-            message.getChannel().sendMessage("**" + username + "** <:bot:995196612550869062> *Today at " + BotLog.clock() + "*\r\n" + content).queue();
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.setColor(Color.RED);
+            embed.setAuthor(username, avatarURL, avatarURL);
+            embed.setDescription(content);
+            message.getChannel().sendMessageEmbeds(embed.build()).queue();
         }
     }
     private static Webhook webhook(Message message) {

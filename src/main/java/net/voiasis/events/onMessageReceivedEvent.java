@@ -2,6 +2,7 @@ package net.voiasis.events;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.voiasis.auto.Grammar;
 import net.voiasis.auto.SpamFilter;
 import net.voiasis.auto.Suggestions;
 import net.voiasis.auto.WordFilter;
@@ -16,5 +17,6 @@ public class onMessageReceivedEvent extends ListenerAdapter {
         BotCommands.commands(event.getMessage(), event.getAuthor(), event.getMember(), event.getGuild());
         SpamFilter.filterSpam(event);
         Suggestions.suggestions(event.getMessage());
+        Grammar.check(event.getMessage());
     }
 }

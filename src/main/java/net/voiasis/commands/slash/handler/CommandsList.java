@@ -3,7 +3,8 @@ package net.voiasis.commands.slash.handler;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
-import net.voiasis.commands.slash.slashSay;
+import net.voiasis.commands.slash.fun.slashSay;
+import net.voiasis.tools.BotLog;
 
 import java.util.HashMap;
 
@@ -31,5 +32,6 @@ public class CommandsList {
             ListOfCommands.addCommands(command.commandData);
         }
         ListOfCommands.queue();
+        BotLog.log("Commands added.", "CommandsList", 1);
     }
 }
