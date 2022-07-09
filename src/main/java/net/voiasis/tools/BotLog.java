@@ -14,7 +14,6 @@ import java.time.format.DateTimeFormatter;
 import javax.annotation.Nullable;
 
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.OnlineStatus;
 
 public class BotLog {
     public static void delete() {
@@ -69,6 +68,11 @@ public class BotLog {
             e.printStackTrace();
         }
     }
+    public static String clock() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("hh:mm a");  
+        LocalDateTime now = LocalDateTime.now();
+        return dtf.format(now);
+    }
     public static String date() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");  
         LocalDateTime now = LocalDateTime.now();
@@ -84,40 +88,8 @@ public class BotLog {
         LocalDateTime now = LocalDateTime.now();
         return dtf.format(now) + " PST";
     }
-    public static void active(JDA jda) {
-        File botLog = new File("active");
-        try {
-            if (botLog.exists() && !botLog.isDirectory()) {
-                log("Failed to create \"" + botLog.getName() + "\" because it already exists.", "BotLog", 2);
-            } else {
-                botLog.createNewFile();
-                log("File created \"" + botLog.getName() + "\" successful.", "BotLog", 1);
-            }
-        } catch (IOException e) {
-            log(getStackTraceString(e, jda), "BotLog", 4);
-        }
-    }
-    public static void inactive(JDA jda) {
-        jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
-        //jda.getPresence().setActivity(Activity.watching(""));
-        File botLog = new File("active");
-        if (botLog.exists() && !botLog.isDirectory()) {
-            botLog.delete();
-            log("Deleted the file \"" + botLog.getName() + "\" successful.", "BotLog", 1);
-        } else {
-            log("Failed to delete \"" + botLog.getName() + "\" because it doesn't exist.", "BotLog", 2);
-        }
-    }
-    public static boolean isActive() {
-        File activeFile = new File("active");
-        if (activeFile.exists() && !activeFile.isDirectory()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
     public static String getStackTraceString(@Nullable Throwable tr, JDA jda) {
-        jda.getGuildById("902397621015040020").getTextChannelById("953515276144619601").sendMessage("``" + timeAdv() + "`` <@472899069136601099>, the server room is on :fire::bangbang:").queue(m -> inactive(jda));
+        jda.getGuildById("902397621015040020").getTextChannelById("953515276144619601").sendMessage("``" + timeAdv() + "`` <@472899069136601099>, the server room is on :fire::bangbang:").queue();
         if (tr == null) {
             return "";
         }

@@ -20,7 +20,6 @@ import net.voiasis.tools.BotLog;
 
 public class langTranslate {
     public static void translate(Message message, User requestUser, String langInput, String langOutput, boolean reactionEvent, int substringLenth) {
-        BotLog.active(message.getJDA());
         message.getChannel().sendTyping().queue(); //change to loading message that gets edited 
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(Color.RED);
@@ -31,14 +30,14 @@ public class langTranslate {
             String embedTitle = "Auto -> " + langTo.substring(0, 1).toUpperCase() + langTo.substring(1) + "";
             String embedText = translator(message.getContentRaw(), langInput, langOutput, message.getJDA(), reactionEvent);
             embed.addField(embedTitle, embedText, false);
-            message.replyEmbeds(embed.build()).mentionRepliedUser(false).queue(m -> BotLog.inactive(message.getJDA()));
+            message.replyEmbeds(embed.build()).mentionRepliedUser(false).queue();
         } else {
             String langFrom = iSO6391CodeToLang.translator(emojiFlagToISO6391Code.translator(langInput, reactionEvent));
             String embedTitle = langFrom.substring(0, 1).toUpperCase() + langFrom.substring(1)
             + " -> " + langTo.substring(0, 1).toUpperCase() + langTo.substring(1) + "";
             String embedText = translator(message.getContentRaw().substring(substringLenth), langInput, langOutput, message.getJDA(), reactionEvent);
             embed.addField(embedTitle, embedText, false);
-            message.replyEmbeds(embed.build()).mentionRepliedUser(false).queue(m -> BotLog.inactive(message.getJDA()));
+            message.replyEmbeds(embed.build()).mentionRepliedUser(false).queue();
         }
     }
     private static String translator(String wordInput, String langInput, String langOutput, JDA jda, boolean reactionEvent) {
@@ -87,8 +86,6 @@ public class langTranslate {
     }
     public static void reactTranslate(MessageReactionAddEvent event) {
         if (event.getUserId().equals("472899069136601099")) {
-            event.retrieveMessage().complete().addReaction(event.getEmoji()).queue();
-            //event.getChannel().sendMessage(event.getEmoji().toString()).queue();
             if (StringUtils.countMatches(event.getEmoji().toString(), "U+1f") == 2 && event.getEmoji().toString().contains("UnicodeEmoji")
             && !event.retrieveMessage().complete().getContentRaw().isBlank()) {
                 translate(event.retrieveMessage().complete(), event.getUser(), "auto", event.getEmoji().getName(), true, 0);

@@ -18,7 +18,7 @@ public class prefixUptime {
         long hour = (ut / (1000 * 60 * 60)) % 24;
         long day = (ut / (1000 * 60 * 60 * 60)) % 24;
         String uptime = day + " Days, " + hour + " Hours, " + minute + " Minutes, and " + second + " Seconds. ";
-        embed.addField("Ellie's Uptime", uptime, false);
+        embed.addField("Ellie's Uptime", "<:settings:994843742567673896> " + uptime, false);
         message.replyEmbeds(embed.build()).queue();
     }
 }

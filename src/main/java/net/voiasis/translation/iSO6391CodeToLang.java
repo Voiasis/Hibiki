@@ -5,57 +5,56 @@ import net.voiasis.tools.BotLog;
 public class iSO6391CodeToLang {
     static String translator(String input) {
         BotLog.log("iSO6391CodeToLangInput: " + input, "LangChange", 3);
-        String word;
         if (input.equals("BG")) {
-            return word = "bulgarian";
+            return "bulgarian";
         } else if (input.equals("CN")) {
-            return word = "chinese";
+            return "chinese";
         } else if (input.equals("CZ")) {
-            return word = "czech";
+            return "czech";
         } else if (input.equals("DK")) {
-            return word = "danish";
+            return "danish";
         } else if (input.equals("NL")) {
-            return word = "dutch";
+            return "dutch";
         } else if (input.equals("US")) {
-            return word = "english";
+            return "english";
         } else if (input.equals("GB")) {
-            return word = "british";
+            return "british";
         } else if (input.equals("FI")) {
-            return word = "estonian";
+            return "estonian";
         } else if (input.equals("FR")) { //https://cdn.discordapp.com/emojis/855474693208014879.webp
-            return word = "french";
+            return "french";
         } else if (input.equals("DE")) {
-            return word = "german";
+            return "german";
         } else if (input.equals("GR")) {
-            return word = "greek";
+            return "greek";
         } else if (input.equals("HU")) {
-            return word = "hungarian";
+            return "hungarian";
         } else if (input.equals("IT")) {
-            return word = "italian";
+            return "italian";
         } else if (input.equals("JP")) {
-            return word = "japanese";
+            return "japanese";
         } else if (input.equals("LV")) {
-            return word = "latvian";
+            return "latvian";
         } else if (input.equals("LT")) {
-            return word = "lithuanian";
+            return "lithuanian";
         } else if (input.equals("PL")) {
-            return word = "polish";
+            return "polish";
         } else if (input.equals("PT")) {
-            return word = "portuguese";
+            return "portuguese";
         } else if (input.equals("BR")) {
-            return word = "brazilian";
+            return "brazilian";
         } else if (input.equals("RO")) {
-            return word = "romanian";
+            return "romanian";
         } else if (input.equals("RU")) {
-            return word = "russian";
+            return "russian";
         } else if (input.equals("SK")) {
-            return word = "slovak";
+            return "slovak";
         } else if (input.equals("SI")) {
-            return word = "slovenian";
+            return "slovenian";
         } else if (input.equals("ES")) {
-            return word = "spanish";
+            return "spanish";
         } else if (input.equals("SE")) {
-            return word = "swedish";
+            return "swedish";
         } else {
             return input;
         }

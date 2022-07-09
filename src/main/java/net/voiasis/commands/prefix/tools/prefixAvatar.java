@@ -1,4 +1,4 @@
-package net.voiasis.commands.prefix.fun;
+package net.voiasis.commands.prefix.tools;
 
 import java.awt.Color;
 

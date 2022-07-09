@@ -31,7 +31,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 
-public class BotCommands {
+public class EditCommands {
     public static void commands(Message message, User author, Member member, Guild guild) {
         String[] args = message.getContentRaw().split("\\s+"); //split message into separate words
         String prefix = BotConfig.get("PREFIX"); //get bot prefix from config
@@ -88,7 +88,7 @@ public class BotCommands {
                 prefixSlowmode.slowmode(member, message, args);
                 break;
                 case "ping" :
-                prefixPing.pingCreate(message);
+                prefixPing.pingEdit(message);
                 break;
                 case "userinfo" :
                 prefixUserinfo.userinfo(message, member, args);

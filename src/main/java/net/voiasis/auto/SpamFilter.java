@@ -1,4 +1,4 @@
-package net.voiasis.tools;
+package net.voiasis.auto;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -14,12 +14,12 @@ public class SpamFilter {
         //spam filter
         try {
             if (!event.getChannel().getId().equals("835802833878122577")) {
-                List<Message> history = event.getTextChannel().getIterableHistory().complete().stream().limit(10).filter(msg -> !msg.equals(event.getMessage())).collect(Collectors.toList());
+                List<Message> history = event.getTextChannel().getIterableHistory().complete().stream().limit(14).filter(msg -> !msg.equals(event.getMessage())).collect(Collectors.toList());
                 int spam = history.stream().filter(message -> message.getAuthor().equals(event.getAuthor()) && !message.getAuthor().isBot()).filter(msg -> (
-                event.getMessage().getTimeCreated().toEpochSecond() - msg.getTimeCreated().toEpochSecond()) < 10).collect(Collectors.toList()).size();
+                event.getMessage().getTimeCreated().toEpochSecond() - msg.getTimeCreated().toEpochSecond()) < 7).collect(Collectors.toList()).size();
                 if (spam > 2 && !event.getGuild().getOwner().equals(event.getMember()) && !PermissionUtil.checkPermission(event.getMember(), Permission.ADMINISTRATOR)) {
                     event.getTextChannel().deleteMessages(history.stream().filter(message -> message.getAuthor().equals(event.getAuthor()) && !message.getAuthor().isBot()).filter(msg ->(
-                    event.getMessage().getTimeCreated().toEpochSecond() - msg.getTimeCreated().toEpochSecond()) < 10).collect(Collectors.toList())).queue();
+                    event.getMessage().getTimeCreated().toEpochSecond() - msg.getTimeCreated().toEpochSecond()) < 7).collect(Collectors.toList())).queue();
                     event.getMember().timeoutFor(10, TimeUnit.SECONDS).queue();
                     event.getChannel().sendMessage("Please slow down, " + event.getAuthor().getAsMention()).queue(message -> {
                         message.delete().queueAfter(10, TimeUnit.SECONDS);

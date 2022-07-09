@@ -1,4 +1,4 @@
-package net.voiasis.tools;
+package net.voiasis.auto;
 
 import java.awt.Color;
 import java.io.BufferedReader;
@@ -19,6 +19,8 @@ import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
+import net.voiasis.tools.BotLog;
+import net.voiasis.tools.SearchTools;
 
 public class StarBoard {
     public static void system(MessageReactionAddEvent event) {
@@ -48,8 +50,6 @@ public class StarBoard {
         //}
     }
     private static void newStarBoard(MessageReactionAddEvent event) {
-        //BotLog.log("newStarBoard", "StarBoard", 2);
-        BotLog.active(event.retrieveMessage().complete().getJDA());
         Message message = event.retrieveMessage().complete();
         int stars = message.getReaction(Emoji.fromUnicode("\u2B50")).getCount();
         String channelMention = event.getChannel().getAsMention();
@@ -71,7 +71,6 @@ public class StarBoard {
         event.getGuild().getTextChannelsByName("starboard", true).get(0)
         .sendMessageEmbeds(embed.build()).content(replyStar(stars) + " " + stars + " " + channelMention).queue(m -> {
             BotLog.log("New starboard added.", "StarBoard", 1);
-            BotLog.inactive(message.getJDA());
             try {
                 starLogAdd(messageId, m.getId());
             } catch (IOException e) {
@@ -81,7 +80,6 @@ public class StarBoard {
         } else {
             event.getGuild().getTextChannelsByName("starboard", true).get(0)
             .sendMessageEmbeds(embed.build()).content(replyStar(stars) + " " + stars + " " + channelMention).queue(m -> {
-                BotLog.inactive(message.getJDA());
                 try {
                     starLogAdd(messageId, m.getId());
                 } catch (IOException e) {
@@ -119,15 +117,12 @@ public class StarBoard {
         return stars;
     }
     private static void editStarboardCount(String reactedMessageId, int stars, String channelMention, Guild guild) throws IOException {
-        //BotLog.log("editStarboardCount", "StarBoard", 2);
-        BotLog.active(guild.getJDA());
         TextChannel starboardChannel = guild.getTextChannelsByName("starboard", true).get(0);
         starboardChannel.retrieveMessageById(starboardMessageId(reactedMessageId)).queue((message) -> {
             try {
                 if (!starboardMessageId(reactedMessageId).contains("=")) {
                     message.editMessage(replyStar(stars) + " " + stars + " " + channelMention).queue(m -> {
                         BotLog.log("Starboard edited.", "StarBoard", 1);
-                        BotLog.inactive(guild.getJDA());
                     });
                 }
             } catch (IOException e) {

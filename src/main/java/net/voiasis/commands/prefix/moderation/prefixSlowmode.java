@@ -1,0 +1,60 @@
+package net.voiasis.commands.prefix.moderation;
+
+import java.awt.Color;
+
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.voiasis.tools.BotLog;
+
+public class prefixSlowmode {
+    public static void slowmode(Member member, Message message, String[] args) {
+        if (member.hasPermission(Permission.MANAGE_CHANNEL)) {
+            if (message.getContentRaw().toCharArray().length >= args[0].length() + 1) {
+                String msgc = args[1];
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.setColor(Color.RED);
+                if (msgc.endsWith("s")) {
+                    String msgt = msgc.replace("s", "");
+                    int time = Integer.parseInt(msgt);
+                    message.getTextChannel().getManager().setSlowmode(time).queue(s -> {
+                        try {
+                            Thread.sleep(1000);
+                            embed.addField("Slowmode Updated", "<:slowmode:994820838916370512> Channel slowmode set to " + message.getTextChannel().getSlowmode() + " seconds.", false);
+                            message.replyEmbeds(embed.build()).queue();
+                        } catch (InterruptedException e) {
+                            BotLog.log(BotLog.getStackTraceString(e, message.getJDA()), "Slowmode", 4);
+                        }
+                    });
+                } else if (msgc.endsWith("m")) {
+                    String time = msgc.replace("m", "");
+                    int timeSeconds = Integer.parseInt(time);
+                    int minute = timeSeconds * 60;
+                    message.getTextChannel().getManager().setSlowmode(minute).queue(s -> {
+                        try {
+                            Thread.sleep(1000);
+                            embed.addField("Slowmode Updated", "<:slowmode:994820838916370512> Channel slowmode set to " + message.getTextChannel().getSlowmode() + " minutes.", false);
+                            message.replyEmbeds(embed.build()).queue();
+                        } catch (InterruptedException e) {
+                            BotLog.log(BotLog.getStackTraceString(e, message.getJDA()), "Slowmode", 4);
+                        }
+                    });
+                } else if (msgc.endsWith("h")) {
+                    String time = msgc.replace("h", "");
+                    int timeSeconds = Integer.parseInt(time);
+                    int hour = timeSeconds * 3600;
+                    message.getTextChannel().getManager().setSlowmode(hour).queue(s -> {
+                        try {
+                            Thread.sleep(1000);
+                            embed.addField("Slowmode Updated", "<:slowmode:994820838916370512> Channel slowmode set to " + message.getTextChannel().getSlowmode() + " hours.", false);
+                            message.replyEmbeds(embed.build()).queue();
+                        } catch (InterruptedException e) {
+                            BotLog.log(BotLog.getStackTraceString(e, message.getJDA()), "Slowmode", 4);
+                        }
+                    });
+                }
+            } 
+        }
+    }
+}

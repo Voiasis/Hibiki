@@ -1,15 +1,15 @@
-package net.voiasis.tools;
+package net.voiasis.auto;
 import java.text.Normalizer;
 import java.util.concurrent.TimeUnit;
 
 import com.github.javafaker.Faker;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.voiasis.tools.SearchTools;
 
 public class NameNormalizer {
-    public static void normalizer(Member member, Guild guild) {
+    public static void normalizer(Member member) {
         try {
             if (!member.hasPermission(Permission.ADMINISTRATOR)) {
                 Faker faker = new Faker();

@@ -6,59 +6,58 @@ public class emojiFlagToISO6391Code {
     static String translator(String input, boolean reactionEvent) {
         String emoji = input;
         BotLog.log("emojiFlagToISO6391CodeInput: " + emoji, "LangChange", 3);
-        String lang;
         if (emoji.contains("🇧🇬")) {
-            return lang = "BG";
+            return "BG";
         } else if (emoji.contains("🇨🇳")) {
-            return lang = "CN";
+            return "CN";
         } else if (emoji.contains("🇨🇿")) {
-            return lang = "CZ";
+            return "CZ";
         } else if (emoji.contains("🇩🇰")) {
-            return lang = "DK";
+            return "DK";
         } else if (emoji.contains("🇳🇱")) {
-            return lang = "NL";
+            return "NL";
         } else if (emoji.contains("🇺🇸")) {
-            return lang = "US";
+            return "US";
         } else if (emoji.contains("🇬🇧")) {
-            return lang = "GB";
+            return "GB";
         } else if (emoji.contains("🇪🇪")) {
-            return lang = "EE";
+            return "EE";
         } else if (emoji.contains("🇫🇮")) {
-            return lang = "FI";
+            return "FI";
         } else if (emoji.contains("🇫🇷")) {
-            return lang = "FR";
+            return "FR";
         } else if (emoji.contains("🇩🇪")) {
-            return lang = "DE";
+            return "DE";
         } else if (emoji.contains("🇬🇷")) {
-            return lang = "GR";
+            return "GR";
         } else if (emoji.contains("🇭🇺")) {
-            return lang = "HU";
+            return "HU";
         } else if (emoji.contains("🇮🇹")) {
-            return lang = "IT";
+            return "IT";
         } else if (emoji.contains("🇯🇵")) {
-            return lang = "JP";
+            return "JP";
         } else if (emoji.contains("🇱🇻")) {
-            return lang = "LV";
+            return "LV";
         } else if (emoji.contains("🇱🇹")) {
-            return lang = "LT";
+            return "LT";
         } else if (emoji.contains("🇵🇱")) {
-            return lang = "PL";
+            return "PL";
         } else if (emoji.contains("🇵🇹")) {
-            return lang = "PT";
+            return "PT";
         } else if (emoji.contains("🇧🇷")) {
-            return lang = "BR";
+            return "BR";
         } else if (emoji.contains("🇷🇴")) {
-            return lang = "RO";
+            return "RO";
         } else if (emoji.contains("🇷🇺")) {
-            return lang = "RU";
+            return "RU";
         } else if (emoji.contains("🇸🇰")) {
-            return lang = "SK";
+            return "SK";
         } else if (emoji.contains("🇸🇮")) {
-            return lang = "SI";
+            return "SI";
         } else if (emoji.contains("🇪🇸")) {
-            return lang = "ES";
+            return "ES";
         } else if (emoji.contains("🇸🇪")) {
-            return lang = "SE";
+            return "SE";
         } else {
             if (reactionEvent) {
                 return "auto";
