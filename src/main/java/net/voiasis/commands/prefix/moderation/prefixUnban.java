@@ -4,14 +4,13 @@ import java.awt.Color;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.UserSnowflake;
 
 public class prefixUnban {
-    public static void unban(Member member, Message message, String[] args) {
-        if (member.hasPermission(Permission.BAN_MEMBERS)) {
+    public static void unban(Message message, String[] args) {
+        if (message.getMember().hasPermission(Permission.BAN_MEMBERS)) {
             EmbedBuilder embed = new EmbedBuilder();
             embed.setColor(Color.RED);
             UserSnowflake mentioned = User.fromId(args[1]);

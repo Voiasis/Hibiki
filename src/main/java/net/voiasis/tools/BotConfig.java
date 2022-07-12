@@ -8,11 +8,8 @@ import java.util.concurrent.TimeUnit;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class BotConfig {
     private static final Dotenv dotenv = Dotenv.load();
@@ -27,8 +24,8 @@ public class BotConfig {
             return false;
         }
     }
-    public static void config(Message message, User author, Guild guild, String[] args) {
-        if (author.getId().equals("472899069136601099") && !args[1].isBlank()) {
+    public static void config(Message message, String[] args) {
+        if (message.getAuthor().getId().equals("472899069136601099") && !args[1].isBlank()) {
             try {
                 BufferedReader file = new BufferedReader(new FileReader("BotConfig.txt"));
                 StringBuffer inputBuffer = new StringBuffer();
@@ -42,19 +39,19 @@ public class BotConfig {
                 if (SearchTools.booleanRegexSearch(args[1] + "0", inputStr)) {
                     inputStr = inputStr.replace(args[1] + "0", args[1] + "1");
                     BotLog.log("Config updated.", "BotCommands", 1);
-                    message.addReaction(guild.getJDA().getEmojiById("956621588084695120")).queue(m1 -> 
+                    message.addReaction(message.getJDA().getEmojiById("956621588084695120")).queue(m1 -> 
                     message.addReaction(Emoji.fromUnicode("\u27A1\uFE0F")).queue(m2 ->
-                    message.addReaction(guild.getJDA().getEmojiById("956621420560011354")).queue(m3 -> {
-                        if (guild.getMemberById("957675828198658080").hasPermission(Permission.MESSAGE_MANAGE)) {
+                    message.addReaction(message.getJDA().getEmojiById("956621420560011354")).queue(m3 -> {
+                        if (message.getGuild().getMemberById("957675828198658080").hasPermission(Permission.MESSAGE_MANAGE)) {
                             message.delete().queueAfter(3, TimeUnit.SECONDS);
                         }})));
                 } else if (SearchTools.booleanRegexSearch(args[1] + "1", inputStr)) {
                     inputStr = inputStr.replace(args[1] + "1", args[1] + "0");
                     BotLog.log("Config updated.", "BotCommands", 1);
-                    message.addReaction(guild.getJDA().getEmojiById("956621420560011354")).queue(m1 -> 
+                    message.addReaction(message.getJDA().getEmojiById("956621420560011354")).queue(m1 -> 
                     message.addReaction(Emoji.fromUnicode("\u27A1\uFE0F")).queue(m2 ->
-                    message.addReaction(guild.getJDA().getEmojiById("956621588084695120")).queue(m3 -> {
-                        if (guild.getMemberById("957675828198658080").hasPermission(Permission.MESSAGE_MANAGE)) {
+                    message.addReaction(message.getJDA().getEmojiById("956621588084695120")).queue(m3 -> {
+                        if (message.getGuild().getMemberById("957675828198658080").hasPermission(Permission.MESSAGE_MANAGE)) {
                             message.delete().queueAfter(3, TimeUnit.SECONDS);
                         }})));
                 }

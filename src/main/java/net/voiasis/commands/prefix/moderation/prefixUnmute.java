@@ -10,8 +10,8 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.UserSnowflake;
 
 public class prefixUnmute {
-    public static void unmute(Member member, Message message, String[] args) {
-        if (member.hasPermission(Permission.MODERATE_MEMBERS)) {
+    public static void unmute(Message message, String[] args) {
+        if (message.getMember().hasPermission(Permission.MODERATE_MEMBERS)) {
             EmbedBuilder embed = new EmbedBuilder();
             embed.setColor(Color.RED);
             if (message.getMentions().getMembers().toArray().length == 1) {

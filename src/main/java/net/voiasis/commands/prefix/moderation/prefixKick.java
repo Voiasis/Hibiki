@@ -10,8 +10,8 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.UserSnowflake;
 
 public class prefixKick {
-    public static void kick(Member member, Message message, String[] args) {
-        if (member.hasPermission(Permission.KICK_MEMBERS)) {
+    public static void kick(Message message, String[] args) {
+        if (message.getMember().hasPermission(Permission.KICK_MEMBERS)) {
             EmbedBuilder embed = new EmbedBuilder();
             embed.setColor(Color.RED);
             if (message.getMentions().getMembers().toArray().length == 1) {

@@ -79,9 +79,9 @@ public class langTranslate {
             return translation;
         }
     }
-    public static void prefixTranslate(Message message, User author, String[] args) {
-        if (author.getId().equals("472899069136601099")) {
-            translate(message, author, args[1], args[2], false, args[0].length() + args[1].length() + args[2].length() + 3);
+    public static void prefixTranslate(Message message, String[] args) {
+        if (message.getAuthor().getId().equals("472899069136601099")) {
+            translate(message, message.getAuthor(), args[1], args[2], false, args[0].length() + args[1].length() + args[2].length() + 3);
         }
     }
     public static void reactTranslate(MessageReactionAddEvent event) {

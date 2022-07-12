@@ -1,16 +1,14 @@
-package net.voiasis.commands.prefix.tools;
+package net.voiasis.commands.prefix.meOnly;
 
 import java.awt.Color;
-import java.util.concurrent.TimeUnit;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 
 public class prefixStatus {
-    public static void status(Member member, Message message, String[] args) {
-        if (member.getId().equals("472899069136601099")) {
+    public static void status(Message message, String[] args) {
+        if (message.getAuthor().getId().equals("472899069136601099")) {
             EmbedBuilder embed = new EmbedBuilder();
             embed.setColor(Color.RED);
             try {

@@ -72,17 +72,29 @@ public class slashSay extends CommandBuilder {
             } else {
                 TextChannel channel2 = event.getGuild().getTextChannelById(channel);
                 if (replyId == null) {
-                    channel2.sendMessage(message).queue();
+                    channel2.sendMessage(message).queue(m -> {
+                        embed.addField("Say", "Sent \"" + m.getContentRaw() + "\" inside " + m.getChannel().getAsMention(), false);
+                        event.replyEmbeds(embed.build()).mentionRepliedUser(false).setEphemeral(true).queue();
+                    });
                 } else {
                     Message message2 = channel2.retrieveMessageById(replyId).complete();
                     if (mention != null) {
                         if (mention) {
-                            message2.reply(message).mentionRepliedUser(true).queue();
+                            message2.reply(message).mentionRepliedUser(true).queue(m -> {
+                                embed.addField("Say", "Sent \"" + m.getContentRaw() + "\" inside " + m.getChannel().getAsMention(), false);
+                                event.replyEmbeds(embed.build()).mentionRepliedUser(false).setEphemeral(true).queue();
+                            });
                         } else {
-                            message2.reply(message).mentionRepliedUser(false).queue();
+                            message2.reply(message).mentionRepliedUser(false).queue(m -> {
+                                embed.addField("Say", "Sent \"" + m.getContentRaw() + "\" inside " + m.getChannel().getAsMention(), false);
+                                event.replyEmbeds(embed.build()).mentionRepliedUser(false).setEphemeral(true).queue();
+                            });
                         }
                     } else {
-                        message2.reply(message).mentionRepliedUser(false).queue();
+                        message2.reply(message).mentionRepliedUser(false).queue(m -> {
+                            embed.addField("Say", "Sent \"" + m.getContentRaw() + "\" inside " + m.getChannel().getAsMention(), false);
+                            event.replyEmbeds(embed.build()).mentionRepliedUser(false).setEphemeral(true).queue();
+                        });
                     }
                 }
             }

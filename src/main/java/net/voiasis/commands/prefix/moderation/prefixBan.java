@@ -10,8 +10,8 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.UserSnowflake;
 
 public class prefixBan {
-    public static void ban(Member member, Message message, String[] args) {
-        if (member.hasPermission(Permission.BAN_MEMBERS)) {
+    public static void ban(Message message, String[] args) {
+        if (message.getMember().hasPermission(Permission.BAN_MEMBERS)) {
             EmbedBuilder embed = new EmbedBuilder();
             embed.setColor(Color.RED);
             if (message.getMentions().getMembers().toArray().length == 1) {

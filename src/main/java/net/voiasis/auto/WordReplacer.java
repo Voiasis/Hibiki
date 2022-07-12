@@ -18,24 +18,31 @@ public class WordReplacer {
     public static void replacer(Message message) {
         if (!message.getAuthor().isBot()) {
             String content = message.getContentRaw();
-            if (content.contains("ur") && !message.getChannel().getId().equals("995434413238259762")) {
-                try {
-                    content = (" " +  check(content) + " ")
-                    .replace(" y ", " why ")
-                    .replace(" Y ", " Why ")
-                    .replace(" u ", " you ")
-                    .replace(" U ", " You ")
-                    .replace(" r ", " are ")
-                    .replace(" R ", " Are ");
-                    String lower = content.toLowerCase();
-                    if (!lower.contains(" ur ") && message.getContentRaw() != content) {
-                        WebhookController.send(message, message.getMember().getEffectiveName(), message.getAuthor().getAvatarUrl(), content);
-                        message.delete().queue();
-                    } else if (lower.contains(" ur ")) {
-                        message.delete().queue();
-                    }  
-                } catch (IOException | IndexOutOfBoundsException e) {
-                    BotLog.log(BotLog.getStackTraceString(e, message.getJDA()), "WordReplacer", 4);
+            String spaced = " " + content.toLowerCase() + " ";
+            if (!message.getChannel().getId().equals("995434413238259762")) {
+                if (!spaced.contains(" ur ") && !spaced.contains(" ur: ") ) {
+                    
+                } else {
+                    try {
+                        content = (" " +  check(content) + " ")
+                        .replace(" y ", " why ")
+                        .replace(" Y ", " Why ")
+                        .replace(" u ", " you ")
+                        .replace(" U ", " You ")
+                        .replace(" r ", " are ")
+                        .replace(" R ", " Are ")
+                        .replace(" agent ", "Voiasis")
+                        .replace(" Agent ", "Voiasis");
+                        String lower = content.toLowerCase();
+                        if (!lower.contains(" ur ") && message.getContentRaw() != content) {
+                            WebhookController.send(message, message.getMember().getEffectiveName(), message.getAuthor().getAvatarUrl(), content);
+                            message.delete().queue();
+                        } else if (lower.contains(" ur ")) {
+                            message.delete().queue();
+                        }  
+                    } catch (IOException | IndexOutOfBoundsException e) {
+                        BotLog.log(BotLog.getStackTraceString(e, message.getJDA()), "WordReplacer", 4);
+                    }
                 }
             }
         }
@@ -45,15 +52,21 @@ public class WordReplacer {
         JLanguageTool langTool = new JLanguageTool(new AmericanEnglish());
         for (Rule rule : langTool.getAllActiveRules()) {
             if (rule instanceof SpellingCheckRule) {
-                List<String> wordsToIgnore = Arrays.asList("lmao", "wdym", "idk", "wtf", "btw", "lol");
+                List<String> wordsToIgnore = Arrays.asList("lmao", "wdym", "idk", "wtf", "btw", "lol", "nvm", "bhai", "alr", "tf");
                 ((SpellingCheckRule)rule).addIgnoreTokens(wordsToIgnore);
             }
         }
+        for (Rule rule : langTool.getAllActiveRules()) {
+            if (rule instanceof SpellingCheckRule) {
+              ((SpellingCheckRule)rule).acceptPhrases(Arrays.asList("lmao", "wdym", "idk", "wtf", "btw", "lol", "nvm", "bhai", "alr", "tf"));
+            }
+          }
+      
         List<RuleMatch> matches = langTool.check(content);
         for (RuleMatch match : matches) {
             replace = content.substring(match.getFromPos(), match.getToPos());
             if (replace.equals("ur")) {
-                content = content.replace(replace, match.getSuggestedReplacements().get(0));
+                content = content.replaceFirst(replace, match.getSuggestedReplacements().get(0));
             } 
         }
         return content;

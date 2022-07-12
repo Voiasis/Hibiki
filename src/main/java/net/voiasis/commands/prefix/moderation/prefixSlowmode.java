@@ -4,13 +4,12 @@ import java.awt.Color;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.voiasis.tools.BotLog;
 
 public class prefixSlowmode {
-    public static void slowmode(Member member, Message message, String[] args) {
-        if (member.hasPermission(Permission.MANAGE_CHANNEL)) {
+    public static void slowmode(Message message, String[] args) {
+        if (message.getMember().hasPermission(Permission.MANAGE_CHANNEL)) {
             if (message.getContentRaw().toCharArray().length >= args[0].length() + 1) {
                 String msgc = args[1];
                 EmbedBuilder embed = new EmbedBuilder();

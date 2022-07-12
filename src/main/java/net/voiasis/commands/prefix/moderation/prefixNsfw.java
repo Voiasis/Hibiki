@@ -4,12 +4,11 @@ import java.awt.Color;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 
 public class prefixNsfw {
-    public static void nsfw(Member member, Message message) {
-        if (member.hasPermission(Permission.MANAGE_CHANNEL)) {
+    public static void nsfw(Message message) {
+        if (message.getMember().hasPermission(Permission.MANAGE_CHANNEL)) {
             EmbedBuilder embed = new EmbedBuilder();
             embed.setColor(Color.RED);
             if (message.getTextChannel().isNSFW()) {

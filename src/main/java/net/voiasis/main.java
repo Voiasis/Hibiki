@@ -31,9 +31,10 @@ public class main {
         rt.exec("taskkill /F /IM chromedriver.exe");
         BotLog.delete();
         BotLog.log("Logging in.", "BotStartup", 1);
+        String prefix = BotConfig.get("PREFIX");
         JDA jda = JDABuilder.createDefault(BotConfig.get("TOKEN"))
-        .setStatus(OnlineStatus.DO_NOT_DISTURB)
-        .setActivity(Activity.watching("Hentai with Voiasis"))
+        .setStatus(OnlineStatus.ONLINE)
+        .setActivity(Activity.watching(prefix + "help"))
         .addEventListeners(new onButtonInteractionEvent(),
         new onGuildMemberJoinEvent(), new onGuildMemberRemoveEvent(),
         new onGuildMemberUpdateNicknameEvent(),
@@ -67,7 +68,7 @@ public class main {
         .build();
         BotLog.log("Login Success.", "BotStartup", 1);
         try {
-            Thread.sleep(1000);
+            Thread.sleep(3000);
             CommandsList.registerCommands(jda, "902397621015040020");
         } catch (InterruptedException e) {
             BotLog.log(BotLog.getStackTraceString(e, jda), "main", 4);

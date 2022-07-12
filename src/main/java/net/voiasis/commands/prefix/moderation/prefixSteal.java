@@ -1,4 +1,4 @@
-package net.voiasis.commands.prefix.tools;
+package net.voiasis.commands.prefix.moderation;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -6,13 +6,13 @@ import java.net.URL;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Icon;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.voiasis.tools.BotLog;
 
 public class prefixSteal {
-    public static void steal(Guild guild, Member member, Message message, String[] args) {
-        if (member.hasPermission(Permission.MANAGE_EMOJIS_AND_STICKERS)) {
+    public static void steal(Message message, String[] args) {
+        Guild guild = message.getGuild();
+        if (message.getMember().hasPermission(Permission.MANAGE_EMOJIS_AND_STICKERS)) {
             if (message.getContentRaw().toCharArray().length >= args[0].length() + args[1].length() + 2) {
                 if (message.getMentions().getCustomEmojis().isEmpty()) {
                     try {

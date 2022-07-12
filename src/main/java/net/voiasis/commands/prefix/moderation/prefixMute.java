@@ -11,8 +11,8 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.UserSnowflake;
 
 public class prefixMute {
-    public static void mute(Member member, Message message, String[] args) {
-        if (member.hasPermission(Permission.MODERATE_MEMBERS)) {
+    public static void mute(Message message, String[] args) {
+        if (message.getMember().hasPermission(Permission.MODERATE_MEMBERS)) {
             if (!args[1].isBlank() && !args[2].isBlank()) {
                 int time = Integer.parseInt(args[2].substring(0, args[2].length() - 1));
                 String letter = args[2].substring(args[2].length() - 1);

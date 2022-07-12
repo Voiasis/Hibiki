@@ -14,7 +14,6 @@ import java.time.format.DateTimeFormatter;
 import javax.annotation.Nullable;
 
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.TextChannel;
 
 public class BotLog {
     public static void delete() {
@@ -90,7 +89,7 @@ public class BotLog {
         return dtf.format(now) + " PST";
     }
     public static String getStackTraceString(@Nullable Throwable tr, JDA jda) {
-        jda.getGuildById("902397621015040020").getTextChannelById("992863387975426088").sendMessage("``" + timeAdv() + "`` <@472899069136601099>, the server room is on :fire::bangbang:").queue();
+        jda.getGuildById("902397621015040020").getThreadChannelById("995049819187990618").sendMessage("``" + timeAdv() + "`` <@472899069136601099>, the server room is on :fire::bangbang:").queue();
         if (tr == null) {
             return "";
         }

@@ -13,7 +13,7 @@ public class SpamFilter {
     public static void filterSpam(MessageReceivedEvent event) { 
         //spam filter
         try {
-            if (!event.getChannel().getId().equals("835802833878122577")) {
+            if (!event.getChannel().getId().equals("996261782693875835")) {
                 List<Message> history = event.getTextChannel().getIterableHistory().complete().stream().limit(14).filter(msg -> !msg.equals(event.getMessage())).collect(Collectors.toList());
                 int spam = history.stream().filter(message -> message.getAuthor().equals(event.getAuthor()) && !message.getAuthor().isBot()).filter(msg -> (
                 event.getMessage().getTimeCreated().toEpochSecond() - msg.getTimeCreated().toEpochSecond()) < 7).collect(Collectors.toList()).size();

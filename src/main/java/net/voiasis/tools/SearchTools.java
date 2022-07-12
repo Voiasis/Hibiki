@@ -64,6 +64,29 @@ public class SearchTools {
         buffReader.close();
         return search;
     }
+    public static String lineSearch3(String search, String content) throws IOException { //returns entire line the search result was found on
+        //BotLog.log(search, file, 3);
+        Scanner in = null;
+        in = new Scanner(content);
+        Boolean found=false;
+        while(in.hasNext()) {
+        String line = in.nextLine();
+            if(booleanRegexSearch(search, line)) {
+                found=true;
+                //BotLog.log("lineSearch: Search result found: \"" + search + "\"", "SearchTools", 1);
+                in.close();
+                return line;
+            }           
+        }
+        if(found==false) {
+            String nope = "?";
+            //BotLog.log("lineSearch failed: Search result not found: \"" + search + "\"", "SearchTools", 3);
+            in.close();
+            return nope;
+        }
+        in.close();
+        return search;
+    }
     public static boolean booleanRegexSearch(String search, String searchContent) { //returns boolean if search result was found
         Pattern pattern = Pattern.compile(search.replace("?", ""), Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(searchContent);
