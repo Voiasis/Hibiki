@@ -1,13 +1,13 @@
 package net.voiasis.commands.prefix;
 
 import net.voiasis.commands.prefix.meOnly.prefixActivity;
+import net.voiasis.commands.prefix.meOnly.prefixNickname;
 import net.voiasis.commands.prefix.meOnly.prefixStatus;
 import net.voiasis.commands.prefix.meOnly.prefixStop;
 import net.voiasis.commands.prefix.moderation.prefixBan;
 import net.voiasis.commands.prefix.moderation.prefixKick;
 import net.voiasis.commands.prefix.moderation.prefixLock;
 import net.voiasis.commands.prefix.moderation.prefixMute;
-import net.voiasis.commands.prefix.moderation.prefixNickname;
 import net.voiasis.commands.prefix.moderation.prefixNsfw;
 import net.voiasis.commands.prefix.moderation.prefixPurge;
 import net.voiasis.commands.prefix.moderation.prefixSlowmode;

@@ -1,6 +1,9 @@
 package net.voiasis.commands.prefix.tools;
 
 import java.awt.Color;
+import java.io.IOException;
+
+import org.apache.hc.core5.http.ParseException;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -8,19 +11,25 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.RichPresence;
 import net.voiasis.auto.Grammar;
+import net.voiasis.tools.BotLog;
+import net.voiasis.tools.SpotifyController;
+import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
+import se.michaelthelin.spotify.model_objects.specification.Track;
 
 public class prefixActinfo {
     public static void actinfo(Message message, String[] args) {
-        if (message.getMentions().getUsers().toArray().length == 1) {
-            send(message, message.getMentions().getMembers().get(0));
-        } else if (message.getContentRaw().length() > args[0].length()) {
-            try {
-                send(message, message.getGuild().getMemberById(args[1]));
-            } catch (Exception e) {
-                message.reply("Invaild user ID provided or can't find that user.").mentionRepliedUser(false).queue();
+        if (message.isFromGuild()) {
+            if (message.getMentions().getUsers().toArray().length == 1) {
+                send(message, message.getMentions().getMembers().get(0));
+            } else if (message.getContentRaw().length() > args[0].length()) {
+                try {
+                    send(message, message.getGuild().getMemberById(args[1]));
+                } catch (Exception e) {
+                    message.reply("Invaild user ID provided or can't find that user.").mentionRepliedUser(false).queue();
+                }
+            } else {
+                send(message, message.getMember());
             }
-        } else {
-            send(message, message.getMember());
         }
     }
     private static void send(Message message, Member member) {
@@ -117,18 +126,46 @@ public class prefixActinfo {
     }
     private static EmbedBuilder field(EmbedBuilder embed, RichPresence presence, Member member, int actCount, int subtract) {
         if (presence != null) {
-            embed.addField(action(presence.getType().name()) + presence.getName(), detail(presence) + "\r\n" + label(presence.getType().name()) + state(presence.getState()), false);
+            embed.addField(
+                action(presence.getType().name()) + presence.getName(),
+                detail(presence) + "\r\n" +
+                label(presence.getType().name()) + state(presence.getState()) +
+                spotifyLink(presence.getType().name(), presence.getName(), member, detail(presence), state(presence.getState())),
+            false);
             image(embed, presence);
             return embed;
         } else {
             Activity activity = member.getActivities().get(actCount - subtract);
             if (activity.getEmoji() != null) { 
-                embed.addField("Custom Status", activity.getEmoji().getFormatted() + " " + status(activity.getName()), false);
+                embed.addField(
+                    "Custom Status",
+                    activity.getEmoji().getFormatted() + " " + status(activity.getName()),
+                    false);
                 return embed;
             } else {
-                embed.addField("Custom Status", action(activity.getType().name()) + status(activity.getName()), false);
+                embed.addField(
+                    "Custom Status",
+                    action(activity.getType().name()) + status(activity.getName()),
+                    false);
                 return embed;
             }
+        }
+    }
+    private static String spotifyLink(String action, String name, Member member, String track, String artist) {
+        String link;
+        if (action.equals("LISTENING") && name.equals("Spotify")) {
+            try {
+                Track[] search = SpotifyController.searchTrack(track + " " + artist);
+                link = "\r\non " + search[0].getAlbum().getName();// + "\r\n[Track link](" + search[0].getExternalUrls().toString().replace("ExternalUrl(externalUrls={spotify=", "").replace("}", "");
+                return link;
+            } catch (IOException | SpotifyWebApiException | ParseException e) {
+                BotLog.log(BotLog.getStackTraceString(e, member.getJDA()), "test", 4);
+                link = "";
+                return link;
+            }
+        } else {
+            link = "";
+            return link;
         }
     }
     private static EmbedBuilder image(EmbedBuilder embed, RichPresence presence) {

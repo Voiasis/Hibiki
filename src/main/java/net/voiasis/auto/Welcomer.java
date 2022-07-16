@@ -18,9 +18,15 @@ public class Welcomer {
         embed.setFooter("User ID: " + member.getId(), member.getUser().getAvatarUrl());
         channel.sendMessageEmbeds(embed.build()).queue();
         embed.clear();
-        Role role = member.getGuild().getRoleById("995455726547914812");
-        UserSnowflake user = User.fromId(member.getUser().getId());
-        member.getGuild().addRoleToMember(user, role).queue();
+        if (!member.getUser().isBot()) {
+            Role role = member.getGuild().getRoleById("995455726547914812");
+            UserSnowflake user = User.fromId(member.getUser().getId());
+            member.getGuild().addRoleToMember(user, role).queue();
+        } else {
+            Role role = member.getGuild().getRoleById("903466755127656489");
+            UserSnowflake user = User.fromId(member.getUser().getId());
+            member.getGuild().addRoleToMember(user, role).queue();
+        }
     }
     public static void leave(Member member) {
         TextChannel channel = member.getJDA().getGuildById("902397621015040020").getTextChannelById("954498679887233065");

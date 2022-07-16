@@ -22,11 +22,11 @@ public class WordFilter {
         }
         if (msgRearSpaced.contains("nigga ")) {
             message.delete().queue();
-            message.getMember().timeoutFor(7, TimeUnit.DAYS).queue();
+            message.getMember().timeoutFor(1, TimeUnit.DAYS).queue();
         }
         if (msgLower.contains("nigge")) {
             message.delete().queue();
-            message.getMember().timeoutFor(7, TimeUnit.DAYS).queue();
+            message.getMember().timeoutFor(1, TimeUnit.DAYS).queue();
         }
         if (msgContent.contains("discord.gg/")) {
             message.delete().queue();

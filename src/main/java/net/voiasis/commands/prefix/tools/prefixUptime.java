@@ -12,7 +12,7 @@ public class prefixUptime {
     public static void uptime(Message message) {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(Color.RED);
-        embed.addField("Ellie's Uptime", "<a:typing:995510544813543545> " + message(), false);
+        embed.addField("Vez Bot's Uptime", "<a:typing:995510544813543545> " + message(), false);
         message.replyEmbeds(embed.build()).mentionRepliedUser(false).queue(m -> {
             int amount = 10;
             while (amount > 0) {
@@ -20,7 +20,7 @@ public class prefixUptime {
                     Thread.sleep(5000);
                     embed.clear();
                     embed.setColor(Color.RED);
-                    embed.addField("Ellie's Uptime", "<a:typing:995510544813543545> " + message(), false);
+                    embed.addField("Vez Bot's Uptime", "<a:typing:995510544813543545> " + message(), false);
                     m.editMessageEmbeds(embed.build()).mentionRepliedUser(false).queue();
                     amount--;
                 } catch (InterruptedException e) {
@@ -30,7 +30,7 @@ public class prefixUptime {
             }
             embed.clear();
             embed.setColor(Color.RED);
-            embed.addField("Ellie's Uptime", "<:time:994820769282531450> " + message(), false);
+            embed.addField("Vez Bot's Uptime", "<:time:994820769282531450> " + message(), false);
             m.editMessageEmbeds(embed.build()).mentionRepliedUser(false).queue();
         });
     }

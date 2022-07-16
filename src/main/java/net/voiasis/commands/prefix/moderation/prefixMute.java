@@ -7,37 +7,35 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.UserSnowflake;
 
 public class prefixMute {
     public static void mute(Message message, String[] args) {
-        if (message.getMember().hasPermission(Permission.MODERATE_MEMBERS)) {
-            if (!args[1].isBlank() && !args[2].isBlank()) {
-                int time = Integer.parseInt(args[2].substring(0, args[2].length() - 1));
-                String letter = args[2].substring(args[2].length() - 1);
-                if (message.getContentRaw().toCharArray().length >= args[0].length() + args[1].length() + args[2].length() + 3) {
-                    String reason = message.getContentRaw().substring(args[0].length() + args[1].length() + args[2].length() + 3);
-                    if (message.getMentions().getMembers().toArray().length == 1) {
-                        Member mentioned = message.getGuild().getMember(message.getMentions().getMembers().get(0));
-                        timeoutYes(letter, time, reason, mentioned, message);
+        if (message.isFromGuild()) {
+            if (message.getMember().hasPermission(Permission.MODERATE_MEMBERS)) {
+                if (!args[1].isBlank() && !args[2].isBlank()) {
+                    int time = Integer.parseInt(args[2].substring(0, args[2].length() - 1));
+                    String letter = args[2].substring(args[2].length() - 1);
+                    if (message.getContentRaw().toCharArray().length >= args[0].length() + args[1].length() + args[2].length() + 3) {
+                        String reason = message.getContentRaw().substring(args[0].length() + args[1].length() + args[2].length() + 3);
+                        if (message.getMentions().getMembers().toArray().length == 1) {
+                            Member mentioned = message.getGuild().getMember(message.getMentions().getMembers().get(0));
+                            timeoutYes(letter, time, reason, mentioned, message);
+                        } else {
+                            Member mentioned = message.getGuild().getMemberById(args[1]);
+                            timeoutYes(letter, time, reason, mentioned, message);
+                        }
                     } else {
-                        UserSnowflake snowflake = User.fromId(args[1]);
-                        Member mentioned = message.getGuild().getMemberById(snowflake.getId());
-                        timeoutYes(letter, time, reason, mentioned, message);
-                    }
-                } else {
-                    if (message.getMentions().getMembers().toArray().length == 1) {
-                        Member mentioned = message.getGuild().getMember(message.getMentions().getMembers().get(0));
-                        timeoutNo(letter, time, mentioned, message);
-                    } else {
-                        UserSnowflake snowflake = User.fromId(args[1]);
-                        Member mentioned = message.getGuild().getMemberById(snowflake.getId());
-                        timeoutNo(letter, time, mentioned, message);
-                    }
-                }  
-            }
-        }
+                        if (message.getMentions().getMembers().toArray().length == 1) {
+                            Member mentioned = message.getGuild().getMember(message.getMentions().getMembers().get(0));
+                            timeoutNo(letter, time, mentioned, message);
+                        } else {
+                            Member mentioned = message.getGuild().getMemberById(args[1]);
+                            timeoutNo(letter, time, mentioned, message);
+                        }
+                    }  
+                }
+            } 
+        } 
     }
     private static void timeoutYes(String letter, int time, String reason, Member mentioned, Message message) {
         EmbedBuilder embed = new EmbedBuilder();

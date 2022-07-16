@@ -17,11 +17,11 @@ public class prefixAvatar {
                 embed.setDescription("[Image Link]("+ mentioned.getAvatarUrl() + "?size=1024)");
                 embed.setImage(mentioned.getAvatarUrl() + "?size=1024");
                 message.replyEmbeds(embed.build()).mentionRepliedUser(false).queue();
-            } else if (!args[1].isEmpty()) {
-                User mentioned = message.getJDA().getUserById(args[1]);
-                embed.setTitle("Avatar of " + mentioned.getAsTag());
-                embed.setDescription("[Image Link]("+ mentioned.getAvatarUrl() + "?size=1024)");
-                embed.setImage(mentioned.getAvatarUrl() + "?size=1024");
+            } else if (message.getContentRaw().length() >= args[0].length() + 1) {
+                User user = message.getJDA().retrieveUserById(args[1]).complete();
+                embed.setTitle("Avatar of " + user.getAsTag());
+                embed.setDescription("[Image Link]("+ user.getAvatarUrl() + "?size=1024)");
+                embed.setImage(user.getAvatarUrl() + "?size=1024");
                 message.replyEmbeds(embed.build()).mentionRepliedUser(false).queue();
             } else {
                 embed.setTitle("Avatar of " + message.getAuthor().getAsTag());

@@ -1,15 +1,18 @@
 package net.voiasis.commands.prefix;
 
 import net.voiasis.commands.prefix.meOnly.prefixActivity;
+import net.voiasis.commands.prefix.meOnly.prefixNickname;
+import net.voiasis.commands.prefix.meOnly.prefixSaveHistory;
 import net.voiasis.commands.prefix.meOnly.prefixStatus;
 import net.voiasis.commands.prefix.meOnly.prefixStop;
+import net.voiasis.commands.prefix.meOnly.prefixSupportPanel;
 import net.voiasis.commands.prefix.moderation.prefixBan;
 import net.voiasis.commands.prefix.moderation.prefixKick;
 import net.voiasis.commands.prefix.moderation.prefixLock;
 import net.voiasis.commands.prefix.moderation.prefixMute;
-import net.voiasis.commands.prefix.moderation.prefixNickname;
 import net.voiasis.commands.prefix.moderation.prefixNsfw;
 import net.voiasis.commands.prefix.moderation.prefixPurge;
+import net.voiasis.commands.prefix.moderation.prefixRules;
 import net.voiasis.commands.prefix.moderation.prefixSlowmode;
 import net.voiasis.commands.prefix.moderation.prefixSteal;
 import net.voiasis.commands.prefix.moderation.prefixUnban;
@@ -25,8 +28,10 @@ import net.voiasis.commands.prefix.tools.prefixHelp;
 import net.voiasis.commands.prefix.tools.prefixJumbo;
 import net.voiasis.commands.prefix.tools.prefixPing;
 import net.voiasis.commands.prefix.tools.prefixServerinfo;
+import net.voiasis.commands.prefix.tools.prefixSpotify;
 import net.voiasis.commands.prefix.tools.prefixUptime;
 import net.voiasis.commands.prefix.tools.prefixUserinfo;
+import net.voiasis.commands.prefix.tools.prefixYoutube;
 import net.voiasis.commands.slash.prefixCreateTemp;
 import net.voiasis.tools.BotConfig;
 import net.voiasis.translation.langTranslate;
@@ -34,7 +39,7 @@ import net.dv8tion.jda.api.entities.Message;
 
 public class BotCommands {
     public static void commands(Message message) {
-        String[] args = message.getContentRaw().split("\\s+"); //split message into separate words
+        String[] args = message.getContentRaw().toLowerCase().split("\\s+"); //split message into separate words
         String prefix = BotConfig.get("PREFIX"); //get bot prefix from config
         String command = args[0].toLowerCase().replace("+", "");
         //bot commands
@@ -135,6 +140,21 @@ public class BotCommands {
                 break;
                 case "actinfo" :
                 prefixActinfo.actinfo(message, args);
+                break;
+                case "spotify" :
+                prefixSpotify.spotify(message, args);
+                break;
+                case "rules" :
+                prefixRules.rules(message);
+                break;
+                case "supportpanel" :
+                prefixSupportPanel.panel(message);
+                break;
+                case "savehistory" :
+                prefixSaveHistory.save(message);
+                break;
+                case "youtube" :
+                prefixYoutube.youtube(message, args);
                 break;
             }
         }

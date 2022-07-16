@@ -16,7 +16,8 @@ public class prefixUserinfo {
             send(message, message.getMentions().getUsers().get(0));
         } else if (message.getContentRaw().length() > args[0].length()) {
             try {
-                send(message, message.getJDA().getUserById(args[1]));
+                User user = message.getJDA().retrieveUserById(args[1]).complete();
+                send(message, user);
             } catch (Exception e) {
                 BotLog.log(BotLog.getStackTraceString(e, message.getJDA()), "test", 4);
                 message.reply("Invaild user ID provided or can't find that user.").mentionRepliedUser(false).queue();

@@ -19,10 +19,10 @@ public class prefixBanner {
                     embed.setImage(mentioned.retrieveProfile().complete().getBannerUrl() + "?size=1024");
                     message.replyEmbeds(embed.build()).mentionRepliedUser(false).queue();
                 } else if (!args[1].isEmpty()) {
-                    User mentioned = message.getJDA().getUserById(args[1]);
-                    embed.setTitle("Banner of " + mentioned.getAsTag());
-                    embed.setDescription("[Image Link]("+ mentioned.retrieveProfile().complete().getBannerUrl() + "?size=1024)");
-                    embed.setImage(mentioned.retrieveProfile().complete().getBannerUrl() + "?size=1024");
+                    User user = message.getJDA().retrieveUserById(args[1]).complete();
+                    embed.setTitle("Banner of " + user.getAsTag());
+                    embed.setDescription("[Image Link]("+ user.retrieveProfile().complete().getBannerUrl() + "?size=1024)");
+                    embed.setImage(user.retrieveProfile().complete().getBannerUrl() + "?size=1024");
                     message.replyEmbeds(embed.build()).mentionRepliedUser(false).queue();
                 } else {
                     embed.setTitle("Banner of " + message.getAuthor().getAsTag());
