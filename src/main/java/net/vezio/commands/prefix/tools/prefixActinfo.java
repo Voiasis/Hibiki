@@ -129,8 +129,8 @@ public class prefixActinfo {
             embed.addField(
                 action(presence.getType().name()) + presence.getName(),
                 detail(presence) + "\r\n" +
-                label(presence.getType().name()) + state(presence.getState()) +
-                spotifyLink(presence.getType().name(), presence.getName(), member, detail(presence), state(presence.getState())),
+                label(presence.getType().name()) + state(presence.getState(), presence) +
+                spotifyLink(presence.getType().name(), presence.getName(), member, detail(presence), state(presence.getState(), presence)),
             false);
             image(embed, presence);
             return embed;
@@ -159,7 +159,7 @@ public class prefixActinfo {
                 link = "\r\non " + search[0].getAlbum().getName();// + "\r\n[Track link](" + search[0].getExternalUrls().toString().replace("ExternalUrl(externalUrls={spotify=", "").replace("}", "");
                 return link;
             } catch (IOException | SpotifyWebApiException | ParseException e) {
-                BotLog.log(BotLog.getStackTraceString(e, member.getJDA()), "test", 4);
+                BotLog.log(BotLog.getStackTraceString(e, member.getJDA()), "Actinfo", 4);
                 link = "";
                 return link;
             }
@@ -170,10 +170,14 @@ public class prefixActinfo {
     }
     private static EmbedBuilder image(EmbedBuilder embed, RichPresence presence) {
         if (presence.getLargeImage() != null) {
+            //BotLog.log(presence.getName() + " " + presence.getLargeImage().getUrl(), "test", 3);
             embed.setThumbnail(presence.getLargeImage().getUrl());
+            //embed.setImage(presence.getLargeImage().getUrl());
             return embed;
         } else if (presence.getSmallImage() != null) {
+            //BotLog.log(presence.getName() + " " + presence.getLargeImage().getUrl(), "test", 3);
             embed.setThumbnail(presence.getSmallImage().getUrl());
+            //embed.setImage(presence.getLargeImage().getUrl());
             return embed;
         } else {
             return embed;
@@ -181,17 +185,21 @@ public class prefixActinfo {
     }
     private static String detail(RichPresence presence) {
         if (presence.getDetails() != null) {
+            //BotLog.log("detail1" + presence.getName(), "test", 3);
             return presence.getDetails();
         } else {
+            //BotLog.log("detail2" + presence.getName(), "test", 3);
             return "";
         }
     }
-    private static String state(String state) {
+    private static String state(String state, RichPresence presence) {
         String newState;
         if (state == null) {
+            //BotLog.log("state1" + presence.getName(), "test", 3);
             newState = " ";
             return newState;
         } else {
+            //BotLog.log("state2" + presence.getName(), "test", 3);
             return state.replace(";", ",");
         }
     }

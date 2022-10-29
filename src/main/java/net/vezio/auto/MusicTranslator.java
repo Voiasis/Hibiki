@@ -4,7 +4,11 @@ import java.awt.Color;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.Normalizer;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,9 +27,13 @@ import net.vezio.tools.SearchTools;
 import net.vezio.tools.SpotifyController;
 import net.vezio.tools.YouTubeController;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
+import se.michaelthelin.spotify.model_objects.IPlaylistItem;
 import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.ExternalUrl;
 import se.michaelthelin.spotify.model_objects.specification.Image;
+import se.michaelthelin.spotify.model_objects.specification.Paging;
+import se.michaelthelin.spotify.model_objects.specification.Playlist;
+import se.michaelthelin.spotify.model_objects.specification.PlaylistTrack;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 
 public class MusicTranslator {
@@ -54,7 +62,21 @@ public class MusicTranslator {
                 int count = args.length;
                 while (count > 0) {
                     if (args[count - 1].contains("https://open.spotify.com/track/")) {
-                        if (spotify(message, args, count)) {
+                        if (spotifyTrack(message, args, count)) {
+                            count = 0;
+                        } else {
+                            count--;
+                        }
+                    } else {
+                        count--;
+                    }
+                }
+            }else if (message.getContentRaw().contains("https://open.spotify.com/playlist/")) {
+                message.addReaction(Emoji.fromCustom("typing", Long.parseLong("1010953714560933969"), true)).queue();
+                int count = args.length;
+                while (count > 0) {
+                    if (args[count - 1].contains("https://open.spotify.com/playlist/")) {
+                        if (spotifyPlaylist(message, args, count)) {
                             count = 0;
                         } else {
                             count--;
@@ -66,11 +88,123 @@ public class MusicTranslator {
             }
         }
     }
-    private static boolean spotify(Message message, String[] args, int count) {
-        String trackId = getSpotifyId(message.getContentRaw());
+    private static boolean spotifyPlaylist(Message message, String[] args, int count) {
+        String playlistId = getSpotifyPlaylistId(message.getContentRaw());
+        try {
+            Playlist playlist = SpotifyController.searchPlaylistId(playlistId);
+            int playlistTotal = playlist.getTracks().getTotal();
+            int totalDuration = 0;
+            String trackNames = "";
+            int totalCheck = 0;
+            if (playlistTotal > 100) {
+                while (playlistTotal > 0) {
+                    Paging<PlaylistTrack> currentPage = SpotifyController.getService().getPlaylistsItems(playlistId).offset(playlistTotal).build().execute();
+                    PlaylistTrack[] playlistItems = currentPage.getItems();
+                    int itemAmount = playlistItems.length;
+                    while (itemAmount > 0) {
+                        IPlaylistItem track = playlistItems[itemAmount - 1].getTrack();
+                        int duration = track.getDurationMs();
+                        totalDuration = duration + totalDuration;
+                        trackNames = trackNames + "\n" + track.getId() + " " + track.getName();
+                        totalCheck++;
+                        itemAmount--;
+                    }
+                    playlistTotal = playlistTotal - 100;
+                }
+                return playlistCheck(message, playlist, totalDuration, trackNames, totalCheck, playlistId);
+            } else {
+                PlaylistTrack[] playlistItems = playlist.getTracks().getItems();
+                int itemAmount = playlistItems.length;
+                while (itemAmount > 0) {
+                    IPlaylistItem track = playlistItems[itemAmount - 1].getTrack();
+                    int duration = track.getDurationMs();
+                    totalDuration = duration + totalDuration;
+                    trackNames = trackNames + "\n" + track.getId() + " " + track.getName();
+                    totalCheck++;
+                    itemAmount--;
+                }
+                return playlistCheck(message, playlist, totalDuration, trackNames, totalCheck, playlistId);
+            }
+        } catch (ParseException | SpotifyWebApiException | IOException e) {
+            BotLog.log(BotLog.getStackTraceString(e, message.getJDA()), "MusicTranslator", 4);
+            message.removeReaction(Emoji.fromCustom("typing", Long.parseLong("1010953714560933969"), true)).queue();
+            //message.addReaction(Emoji.fromCustom("rejected", Long.parseLong("1010938961369247874"), true)).queue();
+            return false;
+        }
+    }
+    private static boolean playlistCheck(Message message, Playlist playlist, Integer totalDuration, String trackNames, Integer totalCheck, String playlistId) throws ParseException, SpotifyWebApiException, IOException {
+        int trueTotal = playlist.getTracks().getTotal();
+        int difference = trueTotal - totalCheck;
+        if (trueTotal != totalCheck) {
+            PlaylistTrack[] playlistItems = playlist.getTracks().getItems();
+            while (difference > 0) {
+                IPlaylistItem track = playlistItems[difference - 1].getTrack();
+                int duration = track.getDurationMs();
+                totalDuration = duration + totalDuration;
+                trackNames = trackNames + "\n" + track.getId() + " " + track.getName();
+                totalCheck++;
+                difference--;
+            }
+            return playlistReply(message, playlist, totalDuration, trackNames);
+        } else {
+            return playlistReply(message, playlist, totalDuration, trackNames);
+        }
+    }
+    private static boolean playlistReply(Message message, Playlist playlist, Integer totalDuration, String trackNames) {
+        String[] trackNameArray = trackNames.split("\n");
+        List<String> trackNameList = Arrays.asList(trackNameArray);
+        Set<String> set = new HashSet<String>();
+        int duplicatesInt = 0;
+        String duplicatesStr = "";
+        for(String str : trackNameList) {
+			boolean flagForDuplicate = set.add(str);
+			if(!flagForDuplicate) {
+                duplicatesInt = duplicatesInt + 1;
+                duplicatesStr = duplicatesStr + str + "\n";
+			}
+		}
+        String playlistName = playlist.getName();
+        String playlistOwner = playlist.getOwner().getDisplayName();
+        int playlistTotal = playlist.getTracks().getTotal();
+        Image[] image = playlist.getImages();
+        int playlistFollowers = playlist.getFollowers().getTotal();
+        String playlistDescription = playlist.getDescription().replace("&#x27;", "'");
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setColor(Color.RED);
+        embed.setDescription("**" + playlistName + "**\nOwner: " + playlistOwner + "\nTracks: " + playlistTotal + "\nDuplicates: " + duplicatesInt + "\nFollowers: " + playlistFollowers + "\nDescription: \n" + playlistDescription);
+        embed.setFooter(getDurationBreakdown(totalDuration));
+        embed.setThumbnail(image[0].getUrl());
+        message.replyEmbeds(embed.build()).mentionRepliedUser(false).queue();
+        message.removeReaction(Emoji.fromCustom("typing", Long.parseLong("1010953714560933969"), true)).queue();
+        return true;
+    }
+    private static String getDurationBreakdown(long millis) {
+        if(millis < 0) {
+            throw new IllegalArgumentException("Duration must be greater than zero!");
+        }
+        long days = TimeUnit.MILLISECONDS.toDays(millis);
+        millis -= TimeUnit.DAYS.toMillis(days);
+        long hours = TimeUnit.MILLISECONDS.toHours(millis);
+        millis -= TimeUnit.HOURS.toMillis(hours);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
+        millis -= TimeUnit.MINUTES.toMillis(minutes);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+        StringBuilder sb = new StringBuilder(64);
+        sb.append(days);
+        sb.append(" " + Grammar.grammar("Day", days) + ", ");
+        sb.append(hours);
+        sb.append(" " + Grammar.grammar("Hour", hours) + ", ");
+        sb.append(minutes);
+        sb.append(" " + Grammar.grammar("Minute", minutes) + ", & ");
+        sb.append(seconds);
+        sb.append(" " + Grammar.grammar("Second", seconds));
+        return(sb.toString());
+    }
+    private static boolean spotifyTrack(Message message, String[] args, int count) {
+        String trackId = getSpotifyTrackId(message.getContentRaw());
         //BotLog.log(trackId, "test1", 3);
         try {
-            Track[] track = SpotifyController.searchId(trackId);
+            Track[] track = SpotifyController.searchTrackId(trackId);
             String trackName = track[0].getName();
             //BotLog.log(trackName, "test2", 3);
             ArtistSimplified[] trackArtistsList = track[0].getArtists();
@@ -93,7 +227,7 @@ public class MusicTranslator {
         SearchResultSnippet snippet = searchResult.getSnippet();
         String prettyString = searchResult.toPrettyString();
         //BotLog.log(prettyString, "test", 3);
-        String resultTitle = snippet.getTitle();
+        String resultTitle = snippet.getTitle().replace("&amp;", "&");
         //String resultLength = SearchTools.lineSearch3("duration", prettyString);
         String resultChannel = snippet.getChannelTitle();
         String resultImageURL = snippet.getThumbnails().getDefault().getUrl();
@@ -155,13 +289,25 @@ public class MusicTranslator {
             return false;
         }
     }
-    private static String getSpotifyId(String spotifyUrl) {
+    private static String getSpotifyTrackId(String spotifyUrl) {
         String pattern = "(?<=open.spotify.com/track/)[^#\\&\\?]*";
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(spotifyUrl);
         if(matcher.find()){
             return matcher.group();
         } else {
+            return "error";  
+        }
+    }
+    private static String getSpotifyPlaylistId(String spotifyUrl) {
+        String pattern = "(?<=open.spotify.com/playlist/)[^#\\&\\?]*";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(spotifyUrl);
+        if(matcher.find()){
+            //BotLog.log(spotifyUrl + " " + pattern, "test1", 3);
+            return matcher.group();
+        } else {
+            //BotLog.log(spotifyUrl + " " + pattern, "test2", 3);
             return "error";  
         }
     }

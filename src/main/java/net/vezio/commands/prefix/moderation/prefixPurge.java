@@ -17,7 +17,7 @@ public class prefixPurge {
                     int values = Integer.parseInt(args[1]) - 1;
                     if (message.getContentRaw().length() >= args[0].length() + args[1].length() + 2) {
                         if (message.getMentions().getUsers().toArray().length == 1) {
-                            purge(message, values, message.getMentions().getUsers().get(0)); 
+                        purge(message, values, message.getMentions().getUsers().get(0)); 
                         } else {
                             try {
                                 User user = message.getJDA().retrieveUserById(args[2]).complete();
@@ -28,7 +28,7 @@ public class prefixPurge {
                             }
                         }
                     } else {
-                        purge(message, values, null);
+                    purge(message, values, null);
                     }
                 }
             }

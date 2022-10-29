@@ -22,11 +22,11 @@ public class Welcomer {
             Role role = member.getGuild().getRoleById("1010933101939130467");
             UserSnowflake user = User.fromId(member.getUser().getId());
             member.getGuild().addRoleToMember(user, role).queue();
-        } else {
+        }/* else {
             Role role = member.getGuild().getRoleById("1010933101939130468");
             UserSnowflake user = User.fromId(member.getUser().getId());
             member.getGuild().addRoleToMember(user, role).queue();
-        }
+        }*/
     }
     public static void leave(Member member) {
         TextChannel channel = member.getJDA().getGuildById("1010933101939130462").getTextChannelById("1010933102207582231");

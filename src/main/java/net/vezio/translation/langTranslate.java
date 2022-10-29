@@ -45,8 +45,8 @@ public class langTranslate {
     private static String translator(String wordInput, String langInput, String langOutput, JDA jda, boolean reactionEvent) {
         DeepLConfiguration deepLConfiguration = new DeepLConfiguration.Builder()
         .setTimeout(Duration.ofSeconds(10))
-        //.setRepetitions(10)
-        //.setRepetitionsDelay(retryNumber -> Duration.ofMillis(3000 + 5000 * retryNumber))
+        .setRepetitions(10)
+        .setRepetitionsDelay(retryNumber -> Duration.ofMillis(3000 + 5000 * retryNumber))
         //.setPostProcessing(true)
         .build();
         DeepLTranslator deepLTranslator = new DeepLTranslator(deepLConfiguration);

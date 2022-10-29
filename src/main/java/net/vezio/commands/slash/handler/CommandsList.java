@@ -9,6 +9,7 @@ import net.vezio.commands.slash.tools.slashActinfo;
 import net.vezio.commands.slash.tools.slashAvatar;
 import net.vezio.commands.slash.tools.slashBanner;
 import net.vezio.commands.slash.tools.slashChannelinfo;
+import net.vezio.commands.slash.tools.slashLinear;
 import net.vezio.commands.slash.tools.slashServerinfo;
 import net.vezio.tools.BotLog;
 
@@ -34,6 +35,7 @@ public class CommandsList {
         CommandsList.add(new slashBanner().getName(), new slashBanner());
         CommandsList.add(new slashServerinfo().getName(), new slashServerinfo());
         CommandsList.add(new slashChannelinfo().getName(), new slashChannelinfo());
+        CommandsList.add(new slashLinear().getName(), new slashLinear());
     }
     public static void registerCommands(JDA api, String GUILD_ID) {
         Guild mainGuild = api.getGuildById(GUILD_ID);
