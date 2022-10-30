@@ -1,14 +1,6 @@
 package net.vezio.auto;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
+
 import java.text.Normalizer;
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
 import com.github.javafaker.Faker;
 

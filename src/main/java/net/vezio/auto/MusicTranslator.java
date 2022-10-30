@@ -20,6 +20,7 @@ import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoSnippet;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.vezio.tools.BotLog;
@@ -71,7 +72,7 @@ public class MusicTranslator {
                         count--;
                     }
                 }
-            }else if (message.getContentRaw().contains("https://open.spotify.com/playlist/")) {
+            } else if (message.getContentRaw().contains("https://open.spotify.com/playlist/")) {
                 message.addReaction(Emoji.fromCustom("typing", Long.parseLong("1010953714560933969"), true)).queue();
                 int count = args.length;
                 while (count > 0) {
@@ -289,7 +290,7 @@ public class MusicTranslator {
             return false;
         }
     }
-    private static String getSpotifyTrackId(String spotifyUrl) {
+    public static String getSpotifyTrackId(String spotifyUrl) {
         String pattern = "(?<=open.spotify.com/track/)[^#\\&\\?]*";
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(spotifyUrl);
@@ -362,4 +363,28 @@ public class MusicTranslator {
             return false;
         }
     }
+    public static String linkTranslator(String arg, Member member) {
+		if (arg.contains("https://open.spotify.com/track/")) {
+			String trackId = MusicTranslator.getSpotifyTrackId(arg);
+			try {
+				Track[] track = SpotifyController.searchTrackId(trackId);
+				String trackName = track[0].getName();
+				ArtistSimplified[] trackArtistsList = track[0].getArtists();
+            	String trackArtists = trackArtistsList[0].getName();
+				List<SearchResult> results = YouTubeController.searchBar(trackName + " " + trackArtists, "video");
+				SearchResult searchResult = results.get(0);
+        		String prettyString = searchResult.toPrettyString();
+        		String videoID = SearchTools.lineSearch3("videoId", prettyString).replace("videoId", "").replace(":", "").replace("\"", "").replace(" ", "");
+				String resultLink = "https://youtu.be/" + videoID;
+				return resultLink;
+			} catch (ParseException | SpotifyWebApiException | IOException | GeneralSecurityException e) {
+				BotLog.log(BotLog.getStackTraceString(e, member.getJDA()), "Music | Play", 4);
+				return "error";
+			}
+        //} else if (arg.contains(arg)) {
+
+		} else {
+			return arg;
+		}
+	}
 }

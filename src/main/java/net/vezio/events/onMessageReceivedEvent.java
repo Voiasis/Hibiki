@@ -7,9 +7,9 @@ import net.vezio.auto.DMcontroller;
 import net.vezio.auto.Grammar;
 import net.vezio.auto.Levels;
 import net.vezio.auto.MusicTranslator;
-import net.vezio.auto.ServerLogs;
 import net.vezio.auto.SpamFilter;
 import net.vezio.auto.Suggestions;
+import net.vezio.commands.music.Music;
 import net.vezio.commands.prefix.BotCommands;
 
 public class onMessageReceivedEvent extends ListenerAdapter {
@@ -24,5 +24,6 @@ public class onMessageReceivedEvent extends ListenerAdapter {
         DMcontroller.controller(message);
         MusicTranslator.musicTranslator(message);
         Levels.levels(message);
+        Music.onMessageReceived(event);
     }
 }

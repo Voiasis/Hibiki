@@ -1,8 +1,11 @@
 package net.vezio;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.security.auth.login.LoginException;
+
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -12,6 +15,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import net.vezio.commands.music.Command;
 import net.vezio.commands.slash.handler.CommandsList;
 import net.vezio.events.onButtonInteractionEvent;
 import net.vezio.events.onChannelCreateEvent;
@@ -27,14 +31,20 @@ import net.vezio.events.onMessageUpdateEvent;
 import net.vezio.events.onSlashCommandInteractionEvent;
 import net.vezio.tools.BotConfig;
 import net.vezio.tools.BotLog;
+import net.vezio.tools.music.AudioPlayerThread;
+import net.vezio.tools.music.Config;
+import net.vezio.tools.music.Utils;
 
 public class main {
+    private static File configFile;
+    static boolean skipping;
+    private static JDA jda;
     public static void main(String[] args) throws LoginException, IOException {
         Runtime rt = Runtime.getRuntime();
         rt.exec("taskkill /F /IM chromedriver.exe");
         BotLog.delete();
         BotLog.log("Logging in.", "BotStartup", 1);
-        JDA jda = JDABuilder.createDefault(BotConfig.get("TOKEN"))
+        jda = JDABuilder.createDefault(BotConfig.get("TOKEN"))
         .setStatus(OnlineStatus.ONLINE)
         .setActivity(Activity.watching("+help | JDA5.A22"))
         .addEventListeners(new onButtonInteractionEvent(),
@@ -72,12 +82,71 @@ public class main {
         CacheFlag.ROLE_TAGS,
         CacheFlag.VOICE_STATE)
         .build();
-        BotLog.log("Login Success.", "BotStartup", 1);
         try {
-            Thread.sleep(10000);
+            jda.awaitReady();
             CommandsList.registerCommands(jda, "1010933101939130462");
+            if(!Config.isInitialized()) {
+                configFile = Config.getDefaultConfig();
+                Config.init(configFile);
+            }
+            AudioPlayerThread.init(jda);
+		    Command.init();
         } catch (InterruptedException e) {
             BotLog.log(BotLog.getStackTraceString(e, jda), "main", 4);
         }
+        BotLog.log("Login Success.", "BotStartup", 1);
+        final int sleepTime = 500; // update game with 2 fps
+		final int updatesDelay = 12000; // 12 seconds delay between game updates (Discord only allows to update the game 5 times per minute)
+		Activity lastActivity = null;
+		int updateDelay = 0;
+		while(true) {
+			do { // sleep at least one time
+				try {
+					Thread.sleep(sleepTime);
+					if(updateDelay > 0) {
+						updateDelay -= sleepTime;
+					}
+				} catch (InterruptedException e) {
+					//e.printStackTrace();
+				}
+			} while(skipping); // sleep again during song skipping to avoid useless game updates
+			if(updateDelay <= 0) { // check if we can update again
+
+				// Update game if needed
+				Activity activity;
+				AudioTrack currentTrack = AudioPlayerThread.getCurrentTrack();
+				if(currentTrack == null) {
+					activity = null;
+				} else {
+					activity = Activity.listening(Utils.getTrackName(currentTrack));
+				}
+				if(lastActivity == null) {
+					if(activity != null) {
+						jda.getPresence().setActivity(activity);
+						lastActivity = activity;
+						updateDelay = updatesDelay;
+						//Log.print("UPDATE GAME LGN: " + game.getName());
+					}
+				} else {
+					if(activity == null) {
+						jda.getPresence().setActivity(Activity.watching("+help | JDA5.A22"));
+						lastActivity = null;
+						updateDelay = updatesDelay;
+						//Log.print("UPDATE GAME NULL");
+					} else {
+						if(!lastActivity.getName().equals(activity.getName())) {
+							jda.getPresence().setActivity(activity);
+							lastActivity = activity;
+							updateDelay = updatesDelay;
+							//Log.print("UPDATE GAME NE: " + game.getName());
+						}
+					}
+				}
+			}
+		}
     }
+    static void setActivity(Activity activity) {
+		jda.getPresence().setActivity(activity);
+		BotLog.log("Set Activity to: " + activity, "main", 1);
+	}
 }
