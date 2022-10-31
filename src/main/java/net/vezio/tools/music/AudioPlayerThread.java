@@ -41,7 +41,6 @@ public class AudioPlayerThread {
 		Guild guild = jda.getGuildCache().getElementById("1010933101939130462");
 		initGuildAudioPlayer(guild);
 		BotLog.log("Initialized audio player.", "AudioPlayerThread", 1);
-		//Log.debug("Initialized audio player.");
 	}
 	public static GuildMusicManager getMusicManager() {
 		return musicManager;

@@ -23,7 +23,8 @@ public class onMessageReceivedEvent extends ListenerAdapter {
         Grammar.check(message);
         DMcontroller.controller(message);
         MusicTranslator.musicTranslator(message);
-        Levels.levels(message);
         Music.onMessageReceived(event);
+        //Levels levels = new Levels();
+        //levels.levels(message);
     }
 }

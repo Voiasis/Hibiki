@@ -4,14 +4,13 @@ import java.util.List;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
 public class ReactionRoles {
     public static void reactionroles(MessageReactionAddEvent event) {
-        if (event.getMember().getId().equals("835691330725347379")) {
-            event.retrieveMessage().complete().addReaction(event.getEmoji()).queue(q -> {});
-        }
+        //if (event.getMember().getId().equals("835691330725347379")) {
+            //event.retrieveMessage().complete().addReaction(event.getEmoji()).queue();
+       // }
         if (event.getChannel().getId().equals("1010933102425681922") && !event.getUser().isBot()) {
             if (event.getEmoji().getName().equals("approved")) {
                 if (!hasRole(event.getMember(), "1010933101939130468")) { //rule accept for memebr role

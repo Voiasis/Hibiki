@@ -36,6 +36,7 @@ import net.vezio.tools.music.Config;
 import net.vezio.tools.music.Utils;
 
 public class main {
+    private static String version = "JDA5.A22";
     private static File configFile;
     static boolean skipping;
     private static JDA jda;
@@ -46,7 +47,7 @@ public class main {
         BotLog.log("Logging in.", "BotStartup", 1);
         jda = JDABuilder.createDefault(BotConfig.get("TOKEN"))
         .setStatus(OnlineStatus.ONLINE)
-        .setActivity(Activity.watching("+help | JDA5.A22"))
+        .setActivity(Activity.playing(version))
         .addEventListeners(new onButtonInteractionEvent(),
         new onGuildMemberJoinEvent(), new onGuildMemberRemoveEvent(),
         new onGuildMemberUpdateNicknameEvent(),
@@ -129,7 +130,7 @@ public class main {
 					}
 				} else {
 					if(activity == null) {
-						jda.getPresence().setActivity(Activity.watching("+help | JDA5.A22"));
+						jda.getPresence().setActivity(Activity.playing(version));
 						lastActivity = null;
 						updateDelay = updatesDelay;
 						//Log.print("UPDATE GAME NULL");

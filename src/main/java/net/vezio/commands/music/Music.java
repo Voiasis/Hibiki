@@ -11,14 +11,11 @@ import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.vezio.tools.music.AudioPlayerThread;
 
 public class Music {
-
 	public static boolean joined;
-
 	public static void joinVoiceChannel(Message message, Guild guild) {
 		if (joined) {
 			return;
 		}
-
 		String channelName = message.getChannel().getName();
 		VoiceChannel voiceChannel = guild.getVoiceChannels().stream().filter(vChan -> vChan.getName().equalsIgnoreCase(channelName)).findFirst().orElse(null);
 
@@ -29,7 +26,6 @@ public class Music {
 
 		//joinVoiceChannel(channel);
 	}
-
 	public static void joinVoiceChannel(Member member, Message message) {
 		Guild guild = member.getGuild();
 		if (joined) {
@@ -54,7 +50,6 @@ public class Music {
 		}
 		joinVoiceChannel(voiceChannel, guild, interaction);
 	}
-
 	public static void joinVoiceChannel(AudioChannelUnion voiceChannel, Guild guild, Message message) {
 		if (joined) {
 			return;
@@ -87,7 +82,6 @@ public class Music {
 					+ "Do I have the permission to join it?").mentionRepliedUser(false).queue();
 		}
 	}
-
 	static void leaveVoiceChannel(Guild guild) {
 		guild.getAudioManager().closeAudioConnection();
 		joined = false;

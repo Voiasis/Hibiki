@@ -17,7 +17,7 @@ public class slashMusicPlay extends CommandBuilder {
     }
     @Override
     public void executeCommand(@NotNull SlashCommandInteractionEvent event) {
-        OptionMapping urlOpt = event.getOption("");
+        OptionMapping urlOpt = event.getOption("url");
         String url = urlOpt == null ? null : urlOpt.getAsString();
         Member member = event.getMember();
         event.reply("``Loading`` <a:typing:1010953714560933969>").mentionRepliedUser(false).queue(q -> {

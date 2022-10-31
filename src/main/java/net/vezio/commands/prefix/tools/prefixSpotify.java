@@ -22,7 +22,12 @@ public class prefixSpotify {
             try {
                 Track[] tracks = SpotifyController.searchTrack(search);
                 int count = tracks.length;
-                switch (count) {
+                if (count == 0) {
+                    message.reply("No results.").mentionRepliedUser(false).queue();
+                } else {
+                    message.replyEmbeds(trackEmbed(tracks, 0).build()).mentionRepliedUser(false).queue();
+                }
+                /*switch (count) {
                     case 0 :
                     message.reply("No results.").mentionRepliedUser(false).queue();
                     break;
@@ -41,7 +46,7 @@ public class prefixSpotify {
                 }
                 if (count >= 5) {
                     message.replyEmbeds(trackEmbed(tracks, 0).build(), trackEmbed(tracks, 1).build(), trackEmbed(tracks, 2).build(), trackEmbed(tracks, 3).build(), trackEmbed(tracks, 4).build()).mentionRepliedUser(false).queue();
-                }
+                }*/
             } catch (ParseException | SpotifyWebApiException | IOException e) {
                 BotLog.log(BotLog.getStackTraceString(e, message.getJDA()), "Spotify", 4);
             }

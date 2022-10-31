@@ -23,7 +23,12 @@ public class prefixYoutube {
             try {
                 List<SearchResult> results = YouTubeController.searchBar(search, type(args));
                 int count = results.size();
-                switch (count) {
+                if (count == 0 ) {
+                    message.reply("No results.").mentionRepliedUser(false).queue();
+                } else {
+                    message.replyEmbeds(resultsEmbed(results, 0).build()).mentionRepliedUser(false).queue();
+                }
+                /*switch (count) {
                     case 0 :
                     message.reply("No results.").mentionRepliedUser(false).queue();
                     break;
@@ -43,7 +48,7 @@ public class prefixYoutube {
                 if (count >= 5) {
                     message.replyEmbeds(resultsEmbed(results, 0).build(), resultsEmbed(results, 1).build(), resultsEmbed(results, 2).build(), resultsEmbed(results, 3).build(), resultsEmbed(results, 4).build())
                     .mentionRepliedUser(false).queue();
-                }
+                }*/
             } catch (GeneralSecurityException | IOException e) {
                 BotLog.log(BotLog.getStackTraceString(e, message.getJDA()), "YouTube", 4);
             }
@@ -54,7 +59,7 @@ public class prefixYoutube {
         SearchResultSnippet snippet = searchResult.getSnippet();
         String prettyString = searchResult.toPrettyString();
         //BotLog.log(prettyString, "test", 3);
-        String resultTitle = snippet.getTitle();
+        String resultTitle = snippet.getTitle().replace("&#39;", "'");
         //String resultLength = SearchTools.lineSearch3("duration", prettyString);
         String resultChannel = snippet.getChannelTitle();
         String resultImageURL = snippet.getThumbnails().getDefault().getUrl();
