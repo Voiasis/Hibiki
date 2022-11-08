@@ -50,6 +50,11 @@
     <version>1.0.3</version>
 </dependency>
 <dependency>
+  <groupId>com.github.taycaldwell</groupId>
+  <artifactId>riot-api-java</artifactId>
+  <version>4.2.0</version>
+</dependency>
+<dependency>
   <groupId>br.com.jbugbrasil</groupId>
   <artifactId>urban-dictionary-client-api</artifactId>
   <version>1.2.Final</version>
@@ -140,6 +145,7 @@
   <version>2.10.14</version>
 </dependency>
 </dependencies>
+
 <repositories>
   <repository>
     <id>dv8tion</id>
