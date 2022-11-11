@@ -9,31 +9,17 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 public class prefixHelp {
     public static void help(Message message) {
-        if (message.isFromGuild()) {
-            if (!message.getChannel().getId().equals("1010947434173694055") /* vez dev thread */ && !message.getChannel().getId().equals("1010933102807363708") && !message.getChannel().getId().equals("1010933102949965905")) {
-                if (!message.getChannelType().isThread()) {
-                    if (!message.getCategory().getId().equals("1010933102807363711")) { //mod
-                        message.reply("Wrong channel. Please move to <#1010933102807363708> first.").mentionRepliedUser(false).queue(); //bot-commands
-                    } else {
-                        message.reply("Wrong channel. Please move to <#1010933102949965905> first.").mentionRepliedUser(false).queue(); //mod
-                    }
-                }
-            } else {
-                send(message);
-            }
-        } else {
-            send(message);
-        }
-    }
-    private static void send(Message message) {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(Color.RED);
-        embed.setTitle("Main page");
-        embed.setDescription("Tools - <:settings:1010953881963986944>\r\nModeration - <:bans:1010954107135217794>");
-        embed.setFooter("Programmed by Vezio#0363");
+        embed.setTitle("Command Lists");
+        embed.setDescription("Fun - <:fun:1040424423213252698>\nMusic - <:music:1040431422634205264>\nTools - <:settings:1010953881963986944>\nModeration - <:bans:1010954107135217794>" +
+        "\n\n**Notes:\n**< > - Required\r\n[ ] - Optional\r\n<:textchannels:1010953804050616342> - Channel\r\n<:mention:1010953969155178509> - User\r\n<:idblock:1010954027120480307> - ID");
+        embed.setFooter("Programmed by Voiasis#0363");
         message.replyEmbeds(embed.build()).setActionRow(
+            Button.primary("fun:1", Emoji.fromCustom("fun", Long.parseLong("1040424423213252698"), false)),
+            Button.primary("music:1", Emoji.fromCustom("music", Long.parseLong("1040431422634205264"), false)),
             Button.primary("tools:1", Emoji.fromCustom("settings", Long.parseLong("1010953881963986944"), false)),
-            Button.primary("mod:1", Emoji.fromCustom("bans", Long.parseLong("1010954107135217794"), false)))
+            Button.danger("mod:1", Emoji.fromCustom("bans", Long.parseLong("1010954107135217794"), false)))
         .mentionRepliedUser(false).queue();
     }
 }

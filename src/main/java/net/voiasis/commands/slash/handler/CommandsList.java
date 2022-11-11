@@ -22,6 +22,7 @@ import net.voiasis.commands.slash.tools.slashActinfo;
 import net.voiasis.commands.slash.tools.slashAvatar;
 import net.voiasis.commands.slash.tools.slashBanner;
 import net.voiasis.commands.slash.tools.slashChannelinfo;
+import net.voiasis.commands.slash.tools.slashHelp;
 import net.voiasis.commands.slash.tools.slashLinear;
 import net.voiasis.commands.slash.tools.slashServerinfo;
 import net.voiasis.tools.BotLog;
@@ -49,6 +50,7 @@ public class CommandsList {
         CommandsList.add(new slashServerinfo().getName(), new slashServerinfo());
         CommandsList.add(new slashChannelinfo().getName(), new slashChannelinfo());
         CommandsList.add(new slashLinear().getName(), new slashLinear());
+        CommandsList.add(new slashHelp().getName(), new slashHelp());
 
         //Music
         CommandsList.add(new slashMusicAdd().getName(), new slashMusicAdd());
@@ -74,6 +76,15 @@ public class CommandsList {
             ListOfCommands.addCommands(command.commandData);
         }
         ListOfCommands.queue();
-        BotLog.log("Commands added.", "CommandsList", 1);
+        BotLog.log("Guild Commands added.", "CommandsList", 1);
+    }
+    public static void registerCommandsGlobal(JDA jda) {
+        addCommandsToList();
+        CommandListUpdateAction ListOfCommands = jda.updateCommands();
+        for (CommandBuilder command : getCommands().values()) {
+            ListOfCommands.addCommands(command.commandData);
+        }
+        ListOfCommands.queue();
+        BotLog.log("Global Commands added.", "CommandsList", 1);
     }
 }

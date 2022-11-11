@@ -85,7 +85,8 @@ public class main {
         .build();
         try {
             jda.awaitReady();
-            CommandsList.registerCommands(jda, "1010933101939130462");
+            CommandsList.registerCommandsGlobal(jda);
+            //CommandsList.registerCommands(jda, "1010933101939130462");
             if(!Config.isInitialized()) {
                 configFile = Config.getDefaultConfig();
                 Config.init(configFile);

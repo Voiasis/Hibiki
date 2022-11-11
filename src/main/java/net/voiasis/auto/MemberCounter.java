@@ -14,6 +14,8 @@ public class MemberCounter {
     private static void update(Guild guild) {
         long bots = guild.getMembers().stream().filter(m -> m.getUser().isBot()).count();
         long humans = guild.getMemberCount() - bots;
-        guild.getVoiceChannelById("1010933102425681920").getManager().setName(humans + " Members").queue();
+        if (guild.getVoiceChannels().get(0).getName().contains("Members")) {
+            guild.getVoiceChannels().get(0).getManager().setName(humans + " Members").queue();
+        }
     }
 }

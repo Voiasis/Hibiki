@@ -1,4 +1,4 @@
-package net.voiasis.commands.prefix.moderation;
+package net.voiasis.commands.prefix.meOnly;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.voiasis.tools.WebhookController;

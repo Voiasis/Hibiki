@@ -11,10 +11,10 @@ import net.voiasis.tools.music.AudioPlayerThread;
 import net.voiasis.tools.music.Utils;
 import net.voiasis.tools.music.Values;
 
-class List extends Command {
+class Queue extends Command {
 	@Override
 	public String getName() {
-		return "list";
+		return "queue";
 	}
 	@Override
 	public boolean isAdminOnly() {

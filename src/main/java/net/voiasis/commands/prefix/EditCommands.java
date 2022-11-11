@@ -1,12 +1,14 @@
 package net.voiasis.commands.prefix;
 
 import net.dv8tion.jda.api.entities.Message;
+import net.voiasis.commands.prefix.fun.prefixNeko;
 import net.voiasis.commands.prefix.meOnly.prefixActivity;
 import net.voiasis.commands.prefix.meOnly.prefixAge;
 import net.voiasis.commands.prefix.meOnly.prefixDMreader;
 import net.voiasis.commands.prefix.meOnly.prefixNickname;
 import net.voiasis.commands.prefix.meOnly.prefixStatus;
 import net.voiasis.commands.prefix.meOnly.prefixStop;
+import net.voiasis.commands.prefix.meOnly.prefixWebhook;
 import net.voiasis.commands.prefix.moderation.prefixBan;
 import net.voiasis.commands.prefix.moderation.prefixKick;
 import net.voiasis.commands.prefix.moderation.prefixLock;
@@ -18,7 +20,6 @@ import net.voiasis.commands.prefix.moderation.prefixSteal;
 import net.voiasis.commands.prefix.moderation.prefixUnban;
 import net.voiasis.commands.prefix.moderation.prefixUnlock;
 import net.voiasis.commands.prefix.moderation.prefixUnmute;
-import net.voiasis.commands.prefix.moderation.prefixWebhook;
 import net.voiasis.commands.prefix.tools.prefixActinfo;
 import net.voiasis.commands.prefix.tools.prefixAvatar;
 import net.voiasis.commands.prefix.tools.prefixBanner;
@@ -147,6 +148,9 @@ public class EditCommands {
                 break;
                 case "age" :
                 prefixAge.age(message);
+                break;
+                case "neko" :
+                prefixNeko.neko(message);
                 break;
             }
         }

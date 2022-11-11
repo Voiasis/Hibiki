@@ -15,9 +15,8 @@ public abstract class Command {
 		prefix = BotConfig.get("PREFIX") + "music ";
 		commands = new ArrayList<>();
 		commands.add(new Add());
-		commands.add(new Help());
 		commands.add(new Jump());
-		commands.add(new List());
+		commands.add(new Queue());
 		commands.add(new Next());
 		commands.add(new Pause());
 		commands.add(new Play());
